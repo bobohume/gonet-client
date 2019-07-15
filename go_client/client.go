@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"gonet/base"
+	"fmt"
 	"gonet/message"
 	"gonet/network"
 	"os"

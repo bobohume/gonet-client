@@ -6,7 +6,6 @@ import (
 	"github.com/golang/protobuf/proto"
 	"fmt"
 	"gonet/base"
-	"gonet/server/world/game/lmath"
 	"gonet/network"
 )
 
@@ -19,8 +18,6 @@ type (
 		PlayerId int64
 		AccountName string
 		SimId int64
-		Pos lmath.Point3F
-		Rot lmath.Point3F
 	}
 
 	IEventProcess interface {
@@ -73,7 +70,6 @@ func (this *EventProcess) PacketFunc(socketid int, buff []byte) bool {
 
 func (this *EventProcess) Init(num int) {
 	this.Actor.Init(num)
-	this.Pos = lmath.Point3F{1, 1, 1}
 	this.RegisterCall("W_C_SelectPlayerResponse", func(packet *message.W_C_SelectPlayerResponse) {
 		this.AccountId = packet.GetAccountId()
 		nLen := len(packet.GetPlayerData())
@@ -116,34 +112,6 @@ func (this *EventProcess) Init(num int) {
 		fmt.Println("收到【", packet.GetSenderName(), "】发送的消息[", packet.GetMessage()+"]")
 	})
 
-	//map
-	this.RegisterCall("W_C_LoginMap", func(packet *message.W_C_LoginMap) {
-		this.SimId = packet.GetId()
-		this.Pos = lmath.Point3F{packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ()}
-		this.Rot = lmath.Point3F{0, 0, packet.GetRotation()}
-		fmt.Println("login map")
-	})
-
-	this.RegisterCall("W_C_Move", func(packet *message.W_C_Move) {
-		if this.SimId == packet.GetId(){
-			this.Pos = lmath.Point3F{packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ()}
-			this.Rot = lmath.Point3F{0, 0, packet.GetRotation()}
-			fmt.Printf("self:[%d], Pos:[x:%f, y:%f, z:%f], Rot[%f]\n", packet.GetId(), packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ(), packet.GetRotation())
-		}else{
-			fmt.Printf("entity:[%d], Pos:[x:%f, y:%f, z:%f], Rot[%f]\n", packet.GetId(), packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ(), packet.GetRotation())
-		}
-		//this.Move(0, 100.0)
-	})
-
-	this.RegisterCall("W_C_ADD_SIMOBJ", func(packet *message.W_C_ADD_SIMOBJ) {
-		if this.SimId == packet.GetId(){
-			this.Pos = lmath.Point3F{packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ()}
-			this.Rot = lmath.Point3F{0, 0, packet.GetRotation()}
-			fmt.Printf("self:[%d], Pos:[x:%f, y:%f, z:%f], Rot[%f]\n", packet.GetId(), packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ(), packet.GetRotation())
-		}else{
-			fmt.Printf("entity:[%d], Pos:[x:%f, y:%f, z:%f], Rot[%f]\n", packet.GetId(), packet.GetPos().GetX(),  packet.GetPos().GetY(), packet.GetPos().GetZ(), packet.GetRotation())
-		}
-	})
 	this.Actor.Start()
 }
 
@@ -169,9 +137,3 @@ func (this *EventProcess)  LoginAccount() {
 var(
 	PACKET *EventProcess
 )
-
-func (this *EventProcess)  Move(yaw float32, time float32) {
-	packet1 := &message.C_W_Move{PacketHead: message.BuildPacketHead(this.AccountId, int(message.SERVICE_WORLDSERVER)),
-		Move: &message.C_W_Move_Move{Mode: 0, Normal:&message.C_W_Move_Move_Normal{Pos:&message.Point3F{X:this.Pos.X, Y:this.Pos.Y, Z:this.Pos.Z}, Yaw:yaw, Duration:time}}}
-	this.SendPacket(packet1)
-}

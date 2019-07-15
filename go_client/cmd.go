@@ -4,7 +4,6 @@ import (
 	"gonet/actor"
 	"gonet/message"
 	"gonet/server/common"
-	"strconv"
 )
 
 type (
@@ -27,11 +26,6 @@ func (this *CmdProcess) Init(num int) {
 			Message:(args),
 		}
 		SendPacket(packet1)
-	})
-
-	this.RegisterCall("move", func(yaw string) {
-		ya, _ := strconv.ParseFloat(yaw, 32)
-		PACKET.Move(float32(ya), 100.0)
 	})
 
 	this.Actor.Start()
