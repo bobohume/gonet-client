@@ -21,7 +21,7 @@ Packet.RegisterPacket("W_C_SelectPlayerResponse", function(packet){
 	var nLen = packet.PlayerData.length;
 	if (nLen == 0){
 		var packet1 = clientpb.message.C_W_CreatePlayerRequest.create();
-		packet1.PacketHead = Packet.BuildPacketHead(0, Packet.SERVICE_ACCOUNTSERVER);
+		packet1.PacketHead = Packet.BuildPacketHead(AccountId, Packet.SERVICE_WORLDSERVER);
 		packet1.PlayerName = "我是js";
 		packet1.Sex = 0;
 		Packet.SendPacket("C_W_CreatePlayerRequest", packet1);
@@ -80,7 +80,7 @@ function LoginAccount(){
 //角色登录
 function LoginGame(){
 	var packet1 = clientpb.message.C_W_Game_LoginRequset.create();
-		packet1.PacketHead = BuildPacketHead(0, SERVICE_WORLDSERVER);
+		packet1.PacketHead = Packet.BuildPacketHead(AccountId, Packet.SERVICE_WORLDSERVER);
 		packet1.PlayerId = PlayerId;
 		Packet.SendPacket("C_W_Game_LoginRequset", packet1)
 };
