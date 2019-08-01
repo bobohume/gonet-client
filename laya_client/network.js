@@ -23,7 +23,7 @@ var Socket = {};
 	});
 
 	Socket.on(Laya.Event.MESSAGE, this, function(evt){
-		var aa = new Uint8Array(evt.data);
+		var aa = new Uint8Array(evt);
 		Packet.ReceivePacket(aa);
 	});
 
