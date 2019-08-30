@@ -3,4 +3,4 @@ var BitStream = require("./BitStream");
 var Packet = require("./Packet");
 var AccountMgr = require("./Account");
 var Network = require("./network");
-
+var game = require("./game");

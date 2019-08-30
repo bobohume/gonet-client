@@ -2,8 +2,8 @@
 //账号一些方法
 var BitStream = require("./BitStream");
 var Packet = require("./Packet");
-var messagepb= require("./pb/message");
-var clientpb= require("./pb/client");
+var gamepb= require("./pb/game");
+
 
 var BUILD_NO = "1,5,1,1";
 
@@ -20,7 +20,7 @@ Packet.RegisterPacket("W_C_SelectPlayerResponse", function(packet){
 	AccountId =  packet.AccountId;
 	var nLen = packet.PlayerData.length;
 	if (nLen == 0){
-		var packet1 = clientpb.message.C_W_CreatePlayerRequest.create();
+		var packet1 = gamepb.message.C_W_CreatePlayerRequest.create();
 		packet1.PacketHead = Packet.BuildPacketHead(AccountId, Packet.SERVICE_WORLDSERVER);
 		packet1.PlayerName = "我是js";
 		packet1.Sex = 0;
@@ -45,7 +45,7 @@ Packet.RegisterPacket("W_C_CreatePlayerResponse", function(packet){
 Packet.RegisterPacket("A_C_LoginRequest", function(packet){
 	console.log(packet);
 	if (packet.Error == 2){
-		var packet1 = clientpb.message.C_A_RegisterRequest.create();
+		var packet1 = gamepb.message.C_A_RegisterRequest.create();
 		packet1.PacketHead = Packet.BuildPacketHead(0, Packet.SERVICE_ACCOUNTSERVER);
 		packet1.AccountName = "test130003";
 		packet1.SocketId = 0;
@@ -69,7 +69,7 @@ Packet.RegisterPacket("W_C_ChatMessage",function(packet){
 //账号登录
 function LoginAccount(){
 	var AccountName = "test130003";
-	var packet1 =  clientpb.message.C_A_LoginRequest.create();
+	var packet1 =  gamepb.message.C_A_LoginRequest.create();
 	packet1.PacketHead = Packet.BuildPacketHead(0, Packet.SERVICE_ACCOUNTSERVER);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = BUILD_NO;
@@ -79,7 +79,7 @@ function LoginAccount(){
 
 //角色登录
 function LoginGame(){
-	var packet1 = clientpb.message.C_W_Game_LoginRequset.create();
+	var packet1 = gamepb.message.C_W_Game_LoginRequset.create();
 		packet1.PacketHead = Packet.BuildPacketHead(AccountId, Packet.SERVICE_WORLDSERVER);
 		packet1.PlayerId = PlayerId;
 		Packet.SendPacket("C_W_Game_LoginRequset", packet1)

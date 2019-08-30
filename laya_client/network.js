@@ -1,6 +1,5 @@
 //Network.js
-var messagepb= require("./pb/message");
-var clientpb= require("./pb/client");
+var gamepb= require("./pb/game");
 var Packet = require("./Packet");
 
 var SERVER_VERSION = 102008000;
@@ -56,7 +55,7 @@ function Close() {
 
 function LoginAccount(){
 	var AccountName = "test130003";
-	var packet1 =  clientpb.message.C_A_LoginRequest.create();
+	var packet1 =  gamepb.message.C_A_LoginRequest.create();
 	packet1.PacketHead = Packet.BuildPacketHead(0, Packet.SERVICE_ACCOUNTSERVER);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = "1,5,1,1";

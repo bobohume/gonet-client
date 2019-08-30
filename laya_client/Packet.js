@@ -2,11 +2,10 @@
 var CRC32 = require('crc-32'); 
 var Network = require("./network");
 var BitStream = require("./BitStream");
-var messagepb= require("./pb/message");
-var clientpb= require("./pb/client");
+var gamepb= require("./pb/game");
+
 var STX = 0X27;
 var CKX = 0x72;
-
 var SERVICE_NONE          = 0;
 var SERVICE_CLIENT        = 1;
 var SERVICE_GATESERVER    = 2;
@@ -49,7 +48,7 @@ function BytesToInt(b){
 
 //创建包头
 function BuildPacketHead(Id, DestServerType=0){
-    var pHead =  new messagepb.message.Ipacket.create();
+    var pHead =  new gamepb.message.Ipacket.create();
     pHead.Ckx = CKX;
     pHead.Stx = STX;
     pHead.Id = Id;
@@ -95,7 +94,7 @@ function HandlePacket(dat){
     var buf = dat.slice(4);
     var packetcreator = m_packets[id];
     if (packetcreator != null){
-        console.log(id, packetcreator, packet);
+        console.log(m_callbacks);
         var packet = packetcreator().decode(buf);
         m_callbacks[id](packet);
         return true;
@@ -189,28 +188,31 @@ function RegisterPacketCreator(name, func){
 
 //注册pb消息体
 RegisterPacketCreator("W_C_SelectPlayerResponse", function(){
-    return clientpb.message.W_C_SelectPlayerResponse;
+    return gamepb.message.W_C_SelectPlayerResponse;
 })
 RegisterPacketCreator("W_C_CreatePlayerResponse", function(){
-    return clientpb.message.W_C_CreatePlayerResponse;
+    return gamepb.message.W_C_CreatePlayerResponse;
 })
 RegisterPacketCreator("W_C_ChatMessage", function(){
-    return clientpb.message.W_C_ChatMessage;
+    return gamepb.message.W_C_ChatMessage;
 })
 RegisterPacketCreator("A_C_LoginRequest", function(){
-    return clientpb.message.A_C_LoginRequest;
+    return gamepb.message.A_C_LoginRequest;
 })
 RegisterPacketCreator("A_C_RegisterResponse", function(){
-    return clientpb.message.A_C_RegisterResponse;
+    return gamepb.message.A_C_RegisterResponse;
 })
 RegisterPacketCreator("C_A_LoginRequest", function(){
-    return clientpb.message.C_A_LoginRequest;
+    return gamepb.message.C_A_LoginRequest;
 })
 RegisterPacketCreator("C_W_CreatePlayerRequest", function(){
-    return clientpb.message.C_W_CreatePlayerRequest;
+    return gamepb.message.C_W_CreatePlayerRequest;
 })
 RegisterPacketCreator("C_A_RegisterRequest", function(){
-    return clientpb.message.C_A_RegisterRequest;
+    return gamepb.message.C_A_RegisterRequest;
+})
+RegisterPacketCreator("C_W_Game_LoginRequset", function(){
+    return gamepb.message.C_W_Game_LoginRequset;
 })
 
 module.exports.RegisterPacket = RegisterPacket;
