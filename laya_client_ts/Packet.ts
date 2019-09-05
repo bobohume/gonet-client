@@ -1,5 +1,6 @@
 import { message } from "./pb/game";
 import { Network } from "./Network";
+import { CRC32 } from "./crc";
 
 var STX = 0X27;
 var CKX = 0x72;
@@ -18,6 +19,22 @@ function BytesToInt(b:number) : number{
     return b[0] | b[1]<<8 | b[2]<<16 | b[3]<<24;
 }
 
+function indexOfMulti (data : any, searchElements : any, fromIndex:any = 0) :number {
+    fromIndex = fromIndex || 0;
+    var index = data.indexOf(searchElements[0], fromIndex);
+    if(searchElements.length === 1 || index === -1) {
+        // Not found or no other elements to check
+        return index;
+    }
+
+    for(var i = index, j = 0; j < searchElements.length && i < data.length; i++, j++) {
+        if(data[i] !== searchElements[j]) {
+            return indexOfMulti(data, searchElements, index + 1);
+        }
+    }
+
+    return (i === index + searchElements.length) ? index : -1;
+};
 
 export namespace Packet{
     //创建包头
@@ -51,6 +68,11 @@ export namespace Packet{
         if (packetcreator != null){
             console.log(m_callbacks);
             var packet = packetcreator().decode(buf);
+            if(m_callbacks[id] == null)
+            {
+                console.log("消息[", packet, "]没有注册!!!!!!!!!!!!!");
+                return false;
+            }
             m_callbacks[id](packet);
             return true;
         }
@@ -82,9 +104,9 @@ export namespace Packet{
     }
 
     //解析包
-    export function ReceivePacket(dat : any) : void{
+    export function ReceivePacket(dat : Uint8Array) : void{
         function seekToTcpEnd(dat){
-            var nCurLen = dat.indexOfMulti(TCP_END);
+            var nCurLen = indexOfMulti(dat, TCP_END);
             if(nCurLen != -1){
                 return nCurLen + TCP_END_LENGTH;
             }
@@ -137,7 +159,7 @@ export namespace Packet{
 var TCP_END = new Uint8Array(7);
 TCP_END.set( [240,159,146,158,226,153,161],0);
 var TCP_END_LENGTH  = TCP_END.length;
-var m_pInBuffer = new Uint8Array(1024);
+var m_pInBuffer = new Uint8Array(0);
 var m_callbacks = new Array();
 var m_packets = new Array();
 

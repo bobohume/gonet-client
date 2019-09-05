@@ -75,3 +75,7 @@ function LoginGame(){
 		packet1.PlayerId = PlayerId;
 		Packet.SendPacket("C_W_Game_LoginRequset", packet1)
 };
+
+export namespace Account{
+	var TEST = "1,5,1,1";
+}

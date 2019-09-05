@@ -1,7 +1,7 @@
 /* crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
 /*exported CRC32 */
-class crc{
+export class crc{
     version : "1.2.0"
     static table : {}
 
@@ -65,7 +65,7 @@ class crc{
         return C ^ -1;
     }
 
-    str(str : string, seed : number = 0xFFFFFFFF) : number {
+    str(str : string, seed : number = 0) : number {
         var C = seed ^ -1;
         for(var i = 0, L=str.length, c, d; i < L;) {
             c = str.charCodeAt(i++);
@@ -90,4 +90,4 @@ class crc{
     }
 }
 
-var CRC32 = new crc();
+export var CRC32 = new crc();
