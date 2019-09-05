@@ -96,6 +96,11 @@ function HandlePacket(dat){
     if (packetcreator != null){
         console.log(m_callbacks);
         var packet = packetcreator().decode(buf);
+        if(m_callbacks[id] == null)
+        {
+            console.log("消息[", packet, "]没有注册!!!!!!!!!!!!!");
+            return false;
+        }
         m_callbacks[id](packet);
         return true;
     }
