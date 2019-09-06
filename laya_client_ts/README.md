@@ -8,6 +8,8 @@ pbjs -t static-module -o game.js game.proto
 4 js转ts文件
 pbts  -o game.d.ts game.js
 
+game.d.ts 添加 type Long = $protobuf.Long
+
 5 protobuf文件安装
  建立src\script\Protobuf文件夹，奖protobufjs的dist\minimal文件夹下的四个文件拷贝到Protobuf文件夹下，将上面生成的bundle.d.ts和bundlel.js文件拷贝到Protobuf文件夹下。
  这时会发现报错。你会发现报错了。
