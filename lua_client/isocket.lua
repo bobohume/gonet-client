@@ -63,7 +63,7 @@ end
 function Socket:ReceivePacket(Id, dat)
 	--找包结束
 	seekToTcpEnd = function(dat)
-		nLen, nEnd = string.find(buff, TCP_END)
+		nLen, nEnd = string.find(dat, TCP_END)
 		if nLen ~= nil then
 			return true, nEnd
 		end
