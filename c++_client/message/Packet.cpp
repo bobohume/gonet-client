@@ -36,7 +36,7 @@ void Packet::RegisterPacket(::google::protobuf::Message* packet) {
 		return;
 	}
 
-	std::string Name = packet->GetDescriptor()->name().c_str();
+	std::string Name = packet->GetDescriptor()->name();
 	U32 packetId = GetMessageCode(Name.c_str());
 
 	auto packetFunc = [packet]() {
@@ -58,7 +58,7 @@ void Packet::RegisterPacket(::google::protobuf::Message* packet) {
 
 void Packet::RegisterPacket(::google::protobuf::Message* packet, std::function<bool(::google::protobuf::Message*)> fun) {
 	if (packet) {
-		//×¢²áÏûÏ¢
+		//×¢ï¿½ï¿½ï¿½ï¿½Ï¢
 		RegisterPacket(packet);
 		Packet_Message_Map[packet->GetDescriptor()->name()] = fun;
 	}
@@ -72,7 +72,7 @@ bool Packet::TriggerPacket(::google::protobuf::Message* packet) {
 			return itr->second(packet);
 		}
 		else {
-			CCLOG("Packet [%s]Î´×¢²á»Øµ÷º¯Êý", Name.c_str());
+			CCLOG("Packet [%s]Î´×¢ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½", Name.c_str());
 		}
 	}
 	return false;
