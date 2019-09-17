@@ -24,7 +24,7 @@ int Packet::Decode(char* buff)
 	return Id;
 }
 
-void Packet::BuildPacketHead(Ipacket* packetHead, int id, int destservertype/*= WORLDSERVER*/) {
+void Packet::BuildPacketHead(Ipacket* packetHead, int64_t id, int destservertype/*= WORLDSERVER*/) {
 	packetHead->set_id(id);
 	packetHead->set_ckx(114);
 	packetHead->set_stx(39);

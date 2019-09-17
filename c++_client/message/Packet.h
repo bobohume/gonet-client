@@ -39,7 +39,7 @@ namespace message {
 
 		static int Encode(::google::protobuf::Message* packet, char buff[]);
 		static int Decode(char* buff);
-		static void BuildPacketHead(Ipacket* packetHead, int id , int destservertype = WORLDSERVER);
+		static void BuildPacketHead(Ipacket* packetHead, int64_t id , int destservertype = WORLDSERVER);
 
 		void RegisterPacket(::google::protobuf::Message* packet);
 		void RegisterPacket(::google::protobuf::Message* packet, std::function<bool(::google::protobuf::Message*)> fun);
