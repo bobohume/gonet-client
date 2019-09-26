@@ -1,4 +1,4 @@
-#include "TcpSocket.h"
+Ôªø#include "TcpSocket.h"
 #include <assert.h>
 #include "message/Packet.h"
 
@@ -20,58 +20,16 @@ inline U32 GetTickCount()
 
 WinTcp::CTcpSocket::CTcpSocket()
 {
-	m_pInBuffer			= NULL;
-	m_bHalf				= false;
-	m_nHalfSize			= 0;			//≥ı ºªØ±‰¡ø
+	m_nHalfSize			= 0;			//ÂàùÂßãÂåñÂèòÈáè
 }
 
 WinTcp::CTcpSocket::~CTcpSocket()
 {
-	if(m_pInBuffer){
-		delete [] m_pInBuffer;
-		m_pInBuffer = NULL;
-	}
-}
-
-void WinTcp::CTcpSocket::SetMaxReceiveBufferSize(int MaxReceiveSize)
-{
-	if(m_MaxReceiveBufferSize != MaxReceiveSize || 0 == m_pInBuffer)
-	{
-		if(m_pInBuffer)
-		{
-			if(m_bHalf && m_nHalfSize >=MaxReceiveSize)
-			{
-				//∂™∆˙‘ΩΩÁ∞¸
-				m_bHalf				= false;
-				m_nHalfSize = 0;
-				CCLOG("(E)÷¬√¸µƒ‘ΩΩÁ∞¸,“—æ≠±ª∫ˆ¬‘ IP=%s", m_sIP);
-
-				delete [] m_pInBuffer;
-				m_pInBuffer = new char [MaxReceiveSize];
-			}
-			else 
-			{
-				//¿©’πBUF
-				char *pTemp = new char [MaxReceiveSize];
-				if(m_nHalfSize)
-					memcpy(pTemp,m_pInBuffer, m_nHalfSize);
-				delete [] m_pInBuffer;
-				m_pInBuffer = pTemp;
-			}
-		}
-		else
-		{
-			m_pInBuffer = new char [MaxReceiveSize];
-		}
-
-		Parent::SetMaxReceiveBufferSize(MaxReceiveSize);
-	}
 }
 
 void WinTcp::CTcpSocket::OnClear()
 {
-	m_bHalf				= false;
-	m_nHalfSize			= 0;			//≥ı ºªØ±‰¡ø
+	m_nHalfSize			= 0;			//ÂàùÂßãÂåñÂèòÈáè
 }
 
 void WinTcp::CTcpSocket::HandlePacket(const char* pInData, int nBufferSize)
@@ -93,73 +51,73 @@ void WinTcp::CTcpSocket::HandlePacket(const char* pInData, int nBufferSize)
 	}
 }
 
-void WinTcp::CTcpSocket::ReceivePacket(const char *pInData, int nBufferSize)
-{
-	const char *lpVt = pInData;
-	int nPacketSize = 0;
-	bool bFindFlag = false;
-
-	if (!lpVt || nBufferSize <= 0)
-	{
-		CCLOG("CTcpSocket::ReceivePacket(), parse packet error!");
-		return;				//”–¥ÌŒÛ
+int memstr(const char* pInData, int nInDataSize, const char* pFindData, int nFindDataSize) {
+	char* pData = (char *)pInData;
+	int nDataSize = nInDataSize;
+FindStr:
+	const char * pSubData = (const char *)memchr(pData, pFindData[0], nDataSize);
+	if (pSubData != NULL) {
+		for (int i = 1; i < nFindDataSize; i++) {
+			if (pSubData[i] != pFindData[i]) {
+				pSubData++;
+				pData = (char *)pSubData;
+				nDataSize -= pSubData - pInData;
+				goto FindStr;
+			}
+		}
+		return pSubData - pInData + TCP_END_LENGTH;
 	}
-
-	auto seekToTcpEnd = [&](const char *pInData, int nBufferSize, bool &bFind, int& nPacketSize) {
-		auto substr = strstr(pInData, TCP_END);
-		if (substr != NULL){
-			bFind = true;
-			nPacketSize = substr - pInData + TCP_END_LENGTH;
-			return;
-		}
-		/*for (auto i = 0; i < nBufferSize - 1; i++) {
-			if (pInData[i] == TCP_END[0] && pInData[i + 1] == TCP_END[1]) {
-				bFind = true;
-				nPacketSize = i + 2;
-				return;
-			}
-		}*/
-
-		bFind = false;
-		nPacketSize = 0;
-		return;
-	};
-
-	if (m_bHalf)
-	{
-		m_bHalf = false;
-		memcpy(&m_pInBuffer[m_nHalfSize], lpVt, nBufferSize);
-		m_nHalfSize += nBufferSize;
-		seekToTcpEnd(m_pInBuffer, m_nHalfSize, bFindFlag, nPacketSize);
-		if (bFindFlag) {
-			if (nBufferSize == nPacketSize) {		//ÕÍ’˚∞¸
-				HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
-			}
-			else if (nBufferSize > nPacketSize) {
-				HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
-				ReceivePacket(&m_pInBuffer[nPacketSize], m_nHalfSize - nPacketSize);
-			}
-		}
-		else {//∂™∆˙±¶
-			CCLOG("∂™∆˙“ª∏ˆ≤ªÕÍ’˚µƒ∞¸");
-		}
-	}
-	else {
-		seekToTcpEnd(pInData, nBufferSize, bFindFlag, nPacketSize);
-		if (bFindFlag) {
-			if (nBufferSize == nPacketSize) {		//ÕÍ’˚∞¸
-				HandlePacket(pInData, nPacketSize - TCP_END_LENGTH);
-			}
-			else if (nBufferSize > nPacketSize) {
-				HandlePacket(pInData, nPacketSize - TCP_END_LENGTH);
-				ReceivePacket(&pInData[nPacketSize], nBufferSize - nPacketSize);
-			}
-		}
-		else {
-			m_bHalf = true;
-			m_nHalfSize = nBufferSize;
-			memcpy(m_pInBuffer, lpVt, nBufferSize);
-		}
-	}
+	return -1;
 }
 
+void seekToTcpEnd(const char* pInData, int nBufferSize, bool &bFind, int& nPacketSize) {
+	nPacketSize = memstr(pInData, nBufferSize, TCP_END, TCP_END_LENGTH);
+	if (nPacketSize != -1) {
+		bFind = true;
+		return;
+	}
+
+	bFind = false;
+	nPacketSize = 0;
+	return;
+}
+
+void WinTcp::CTcpSocket::ReceivePacket(const char *pInData, int nInDataSize)
+{
+	if (!pInData || nInDataSize <= 0)
+	{
+		CCLOG("CTcpSocket::ReceivePacket(), parse packet error!");
+		return;				//ÊúâÈîôËØØ
+	}
+
+	int nCurSize = 0;
+	memcpy(&m_pInBuffer[m_nHalfSize], pInData, nInDataSize);
+	m_nHalfSize += nInDataSize;
+	m_pInBuffer[m_nHalfSize] = '\0';
+
+ParsePacekt:
+	int nPacketSize = 0;
+	int nBufferSize = m_nHalfSize - nCurSize;
+	bool bFindFlag = false;
+	seekToTcpEnd(&m_pInBuffer[nCurSize], m_nHalfSize, bFindFlag, nPacketSize);
+	if (bFindFlag) {
+		if (nBufferSize == nPacketSize) {		//ÂÆåÊï¥ÂåÖ
+			HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
+			m_nHalfSize = 0;
+		}
+		else if (nBufferSize > nPacketSize) {
+			HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
+			nCurSize += nPacketSize;
+			goto ParsePacekt;
+		}
+	}
+	else if (nBufferSize < 1024) {
+		memmove(m_pInBuffer, &m_pInBuffer[nCurSize], m_nHalfSize - nCurSize);
+		m_pInBuffer[m_nHalfSize - nCurSize] = '\0';
+		m_nHalfSize = m_nHalfSize - nCurSize;
+	}
+	else {
+		CCLOG("Ë∂ÖÂá∫ÊúÄÂ§ßÂåÖÈôêÂà∂Ôºå‰∏¢ÂºÉËØ•ÂåÖ");
+		m_nHalfSize = 0;
+	}
+}
