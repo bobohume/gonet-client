@@ -111,7 +111,7 @@ ParsePacekt:
 			goto ParsePacekt;
 		}
 	}
-	else if (nBufferSize < 1024) {
+	else if (nBufferSize < MAX_PACKET_RECEIEVE_SIZE) {
 		memmove(m_pInBuffer, &m_pInBuffer[nCurSize], m_nHalfSize - nCurSize);
 		m_pInBuffer[m_nHalfSize - nCurSize] = '\0';
 		m_nHalfSize = m_nHalfSize - nCurSize;

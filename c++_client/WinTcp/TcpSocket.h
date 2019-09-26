@@ -6,6 +6,7 @@
 static unsigned char s_tcp_end[32] = { 240,159,146,158,226,153,161 };
 #define  TCP_END ((char *)s_tcp_end) //解决tpc粘包半包,结束标志
 #define  TCP_END_LENGTH strlen(TCP_END) //tcp结束标志长度
+#define  MAX_PACKET_RECEIEVE_SIZE (10*1024*1024)//最大接收缓冲池
 namespace WinTcp {
 
 class CTcpSocket : public ISocket
@@ -14,7 +15,7 @@ public:
 	typedef ISocket Parent;
 
 protected:
-	char	m_pInBuffer[10*1024*1024];
+	char	m_pInBuffer[MAX_PACKET_RECEIEVE_SIZE];
 	int		m_nHalfSize;
 
 protected:
