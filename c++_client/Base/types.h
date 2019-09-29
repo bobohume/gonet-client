@@ -98,6 +98,7 @@ const unsigned int ACCOUNT_NAME_LENGTH		= 50;
 const unsigned int PASSWORD_LENGTH			= 32;
 const unsigned int MAX_NETBAR_DRAW			= 10;
 const unsigned int MAX_BADWORDS_LENGTH		= 250;
+const unsigned int MAX_PACKET_RECEIEVE_SIZE = 10 * 1024 * 1024;//最大接收缓冲池
 #define 	SimTime	 U32
 
 static const int MaxPacketBuffSize = MAX_PACKET_SIZE + 128;

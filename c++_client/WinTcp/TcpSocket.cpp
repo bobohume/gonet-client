@@ -35,7 +35,7 @@ void WinTcp::CTcpSocket::OnClear()
 void WinTcp::CTcpSocket::HandlePacket(const char* pInData, int nBufferSize)
 {
 #ifdef DEBUG
-	static unsigned long uReceves = 0;
+	static char buff[MAX_PACKET_RECEIEVE_SIZE] = "";
 	uReceves++;
 	CCLOG(">>>>>>>OnHandleAPacket receive packet %d\n", uReceves);
 #endif
@@ -59,9 +59,12 @@ FindStr:
 	if (pSubData != NULL) {
 		for (int i = 1; i < nFindDataSize; i++) {
 			if (pSubData[i] != pFindData[i]) {
-				pSubData++;
+				pSubData++;//可能是最后一个字节
 				pData = (char *)pSubData;
 				nDataSize -= pSubData - pInData;
+				if (nDataSize <= 0) {
+                	return -1;
+                }
 				goto FindStr;
 			}
 		}
@@ -99,7 +102,7 @@ ParsePacekt:
 	int nPacketSize = 0;
 	int nBufferSize = m_nHalfSize - nCurSize;
 	bool bFindFlag = false;
-	seekToTcpEnd(&m_pInBuffer[nCurSize], m_nHalfSize, bFindFlag, nPacketSize);
+	seekToTcpEnd(&m_pInBuffer[nCurSize], nBufferSize, bFindFlag, nPacketSize);
 	if (bFindFlag) {
 		if (nBufferSize == nPacketSize) {		//完整包
 			HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
