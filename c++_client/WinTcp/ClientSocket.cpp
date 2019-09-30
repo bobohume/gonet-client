@@ -9,26 +9,21 @@
 using namespace message;
 #define MAX_CONNECT_TIME	(10*1000)
 int g_connectResult = 0;
-WinTcp::ClientSocket::ClientSocket():m_enabled(true), m_isConnecting(false), m_isConnected(false), m_sendConnected(0)
+WinTcp::ClientSocket::ClientSocket():m_isConnecting(false), m_isConnected(false)
 {
-	m_enabled	   = true;
+	m_sendConnected = 0;
 	m_isConnecting = false;
 	m_isConnected  = false;
     m_sendConnected= false;
 	m_isDisConnected= false;
-	SetMaxReceiveBufferSize(MAX_PACKET_SIZE);
+	SetMaxReceiveBufferSize(PACKET_MAX_SIZE);
 }
 
 WinTcp::ClientSocket::~ClientSocket()
 {
 }
 
-void WinTcp::ClientSocket::InitCache()
-{
-    m_Seq = 0;
-}
-
-void WinTcp::ClientSocket::Initial(void*)
+bool WinTcp::ClientSocket::Initialize()
 {
 #ifdef _WINSOCKAPI_
 	WSADATA wsaData;
@@ -36,12 +31,18 @@ void WinTcp::ClientSocket::Initial(void*)
 	{
 		WSACleanup();
 		assert(0);
-		return;
+		return false;
 	}
 
 #endif
-
+	return true;
 	//CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this,0,0);
+}
+
+bool  WinTcp::ClientSocket::Disconnect()
+{
+	Close();
+	return true;
 }
 
 void WinTcp::ClientSocket::update(float dt)
@@ -89,59 +90,73 @@ void WinTcp::ClientSocket::Release(void)
 #ifdef _WINSOCKAPI_
 	WSACleanup();
 #endif
-	//CCDirector::sharedDirector()->getScheduler()->unscheduleUpdateForTarget(this);
+	//CCDirector::sharedDirector()->getScheduler()->scheduleUpdateForTarget(this,0,0);
 }
 
-bool WinTcp::ClientSocket::Send(::google::protobuf::Message* packet, int ctrlType)
+bool WinTcp::ClientSocket::Send(::google::protobuf::Message* packet)
 {
 	if (!packet)
 		return false;
 
-	char buff[MAX_PACKET_SIZE] = "";
+	char buff[PACKET_MAX_SIZE] = "";
 	int nPacketSize = Packet::Encode(packet, buff);
 	delete packet;
-	strcat(buff, TCP_END);
+	memcpy(&buff[nPacketSize], TCP_END, TCP_END_LENGTH);
+	//strcat(buff, TCP_END);
 	nPacketSize = nPacketSize + TCP_END_LENGTH;
 	buff[nPacketSize] = '\0';
-	return Send(buff, nPacketSize, ctrlType);
+	return Send(buff, nPacketSize);
 }
 
-bool WinTcp::ClientSocket::ConnectToServer(const char* szServerAddr, int nServerPort)
+int WinTcp::ClientSocket::Connect(const char* szServerAddr, int nServerPort)
 {
-	if(m_isConnecting)
+	if (m_isConnecting)
 	{
 		return false;
 	}
-    
-    if (m_Socket.isValid() && m_strServerAddr == szServerAddr && m_nServerPort == nServerPort)
-    {
-        return false;
-    }
-    
-    if (m_strServerAddr != szServerAddr || m_nServerPort != nServerPort)
-    {
-        InitCache();
-    }
-    
-    Close();
 
-	m_isConnecting  = true;
-    m_sendConnected = false;
-	m_strServerAddr = szServerAddr;
-	m_nServerPort	= nServerPort;
+	if (m_Socket.isValid() && m_sIP == szServerAddr && m_nPort == nServerPort)
+	{
+		return false;
+	}
 
-#ifdef _WIN32
+	Close();
+
+	m_isConnecting = true;
+	m_sendConnected = false;
+	m_sIP = szServerAddr;
+	m_nPort = nServerPort;
+	if (!m_Socket.create())
+	{
+		return -1;
+	}
+
+	if (!m_Socket.connect(m_sIP.c_str(), m_nPort))
+	{
+		m_Socket.close();
+		return -2;
+	}
+
+	if (!m_Socket.setNonBlocking() || !m_Socket.setLinger(0))
+	{
+		m_Socket.close();
+		return -3;
+	}
+
+	m_sendConnected = true;
+	m_isConnecting = false;
+	ACCOUNT->LoginAccount();
+
+	/*#ifdef _WIN32
 	m_hConnectThread = CreateThread(NULL, 0, _ConnectThread, NULL, 0, NULL);
 #else
 	pthread_create(&m_hConnectThread, NULL, _ConnectThread, NULL);
 	pthread_detach(m_hConnectThread);
-#endif
-
-    
-	return true;
+#endif*/
+	return 1;
 }
 
-bool WinTcp::ClientSocket::Send(const char* buffer, int bufferLen, int ctrlType)
+bool WinTcp::ClientSocket::Send(const char* buffer, int bufferLen)
 {
     if (!m_Socket.isValid())
     {
@@ -159,56 +174,9 @@ void WinTcp::ClientSocket::OnConnected()
 	m_isDisConnected = false;
 }
 
-U32 WinTcp::ClientSocket::ReceivePacket(char* buffer, U32 bufferLen)
+void WinTcp::ClientSocket::ReceivePacket(const char* buffer, int bufferLen)
 {
-    CTcpSocket::ReceivePacket((const char *)buffer, bufferLen);
-    return bufferLen;
-}
-
-
-#ifdef _WIN32
-DWORD WINAPI WinTcp::ClientSocket::_ConnectThread(LPVOID data)
-{
-	g_connectResult = ClientSocket::Instance()->ConnectThread();
-	ClientSocket::Instance()->m_sendConnected = true;
-	ClientSocket::Instance()->m_isConnecting = false;
-	ACCOUNT->LoginAccount();
-	return 0;
-}
-#else
-void* WinTcp::ClientSocket::_ConnectThread(void* data)
-{
-	g_connectResult = ClientSocket::Instance()->ConnectThread();
-    ClientSocket::Instance()->m_sendConnected = true;
-	ClientSocket::Instance()->m_isConnecting  = false;
-	
-	pthread_exit(NULL);
-	return 0;
-}
-#endif
-
-int WinTcp::ClientSocket::ConnectThread(void)
-{
-	m_Socket.close();
-
-	if(!m_Socket.create()) 
-	{
-		return -1;
-	}
-
-	if(!m_Socket.connect( m_strServerAddr.c_str(), m_nServerPort ))
-	{
-		m_Socket.close();
-		return -2 ;
-	}
-
-	if(!m_Socket.setNonBlocking() || !m_Socket.setLinger(0))
-	{
-		m_Socket.close();
-		return -3;
-	}
-
-	return 1;
+    CTcpSocket::ReceivePacket(buffer, bufferLen);
 }
 
 bool WinTcp::ClientSocket::Select(void)
@@ -290,7 +258,7 @@ bool WinTcp::ClientSocket::ProcessInput(void)
 	}
 	else if (ret > 0)
 	{
-		ReceivePacket(readBuff.get(), ret);
+		ReceivePacket((const char *)readBuff.get(), ret);
 	}
 	/*else
 	{
@@ -302,9 +270,6 @@ bool WinTcp::ClientSocket::ProcessInput(void)
 
 bool WinTcp::ClientSocket::ProcessOutput(void)
 {
-	if (!m_enabled)
-		return false;
-
 	if (!m_Socket.isValid())
 		return false;
 
@@ -332,33 +297,9 @@ void WinTcp::ClientSocket::OnDisconnect(void)
 	m_isConnected = false;
 	m_isDisConnected = true;
 }
-
-
-bool WinTcp::ConnectServer(const char* szServerAddr, int nServerPort)
-{
-	return ClientSocket::Instance()->ConnectToServer(szServerAddr,nServerPort);
-}
-
-void WinTcp::DisconnectServer(void)
-{
-	return ClientSocket::Instance()->Close();
-}
-
-int WinTcp::SendServer(char* ptr,int len)
-{
-	ClientSocket::Instance()->Send(ptr, len);
-    return 0;
-}
-
-void WinTcp::SocketPause(bool isEnabled)
-{
-	return ClientSocket::Instance()->Enable(isEnabled);
-}
-
-
 /*
-WinTcp::CLIENT_TCP->Initial(NULL);
-WinTcp::ConnectServer("192.168.84.62", 31700);
+WinTcp::CLIENT_TCP->Initialize(NULL);
+WinTcp::CLIENT_TCP->Connect("192.168.84.62", 31700);
 while (true)
 {
 WinTcp::CLIENT_TCP->update(0);

@@ -32,14 +32,10 @@ void WinTcp::CTcpSocket::OnClear()
 	m_nHalfSize			= 0;			//初始化变量
 }
 
+#pragma optimize("",off) 
 void WinTcp::CTcpSocket::HandlePacket(const char* pInData, int nBufferSize)
 {
-#ifdef DEBUG
 	static char buff[MAX_PACKET_RECEIEVE_SIZE] = "";
-	uReceves++;
-	CCLOG(">>>>>>>OnHandleAPacket receive packet %d\n", uReceves);
-#endif
-	char buff[MAX_PACKET_SIZE] = "";
 	memcpy(buff, pInData, nBufferSize);
 	int id = message::Packet::Instance()->Decode(buff);
 	auto packet = message::Packet::Instance()->GetPakcet(id);
@@ -60,9 +56,9 @@ FindStr:
 		for (int i = 1; i < nFindDataSize; i++) {
 			if (pSubData[i] != pFindData[i]) {
 				pSubData++;
-               nDataSize -= pSubData - pData;
-               pData = (char *)pSubData;
-               goto FindStr;
+				nDataSize -= pSubData - pData;
+				pData = (char *)pSubData;
+				goto FindStr;
 			}
 		}
 		return pSubData - pInData + TCP_END_LENGTH;
@@ -121,3 +117,4 @@ ParsePacekt:
 		m_nHalfSize = 0;
 	}
 }
+#pragma optimize("",on) 

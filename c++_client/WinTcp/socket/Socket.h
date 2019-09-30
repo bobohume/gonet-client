@@ -16,7 +16,7 @@ enum ERROR_SOCKET
 
 namespace WinTcp
 {
-class Socket 
+class Socket
 {
 public :
 	Socket ();

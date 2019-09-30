@@ -48,6 +48,7 @@ void Packet::RegisterPacket(::google::protobuf::Message* packet) {
 }
 
 ::google::protobuf::Message* Packet::GetPakcet(int Id) {
+	//std::lock_guard<std::mutex> lck(m_PacketLocker);
 	auto itr = Packet_CreateFactorMap.find(Id);
 	if (itr != Packet_CreateFactorMap.end()) {
 		return itr->second();
@@ -58,7 +59,8 @@ void Packet::RegisterPacket(::google::protobuf::Message* packet) {
 
 void Packet::RegisterPacket(::google::protobuf::Message* packet, std::function<bool(::google::protobuf::Message*)> fun) {
 	if (packet) {
-		//×¢ï¿½ï¿½ï¿½ï¿½Ï¢
+		//std::lock_guard<std::mutex> lck(m_PacketLocker);
+		//×¢²áÏûÏ¢
 		RegisterPacket(packet);
 		Packet_Message_Map[packet->GetDescriptor()->name()] = fun;
 	}
@@ -66,13 +68,14 @@ void Packet::RegisterPacket(::google::protobuf::Message* packet, std::function<b
 
 bool Packet::TriggerPacket(::google::protobuf::Message* packet) {
 	if (packet) {
+		//std::lock_guard<std::mutex> lck(m_PacketLocker);
 		std::string Name = packet->GetDescriptor()->name();
 		auto itr = Packet_Message_Map.find(Name);
 		if (itr != Packet_Message_Map.end()) {
 			return itr->second(packet);
 		}
 		else {
-			CCLOG("Packet [%s]Î´×¢ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½", Name.c_str());
+			//CCLOG("Packet [%s]Î´×¢²á»Øµ÷º¯Êý", Name.c_str());
 		}
 	}
 	return false;

@@ -26,6 +26,8 @@
 #include <google/protobuf/unknown_field_set.h>
 #include "message.pb.h"
 #include <functional>
+#include <mutex>
+#include <unordered_map>
 
 namespace message {
 	class Packet
@@ -46,6 +48,7 @@ namespace message {
 		bool TriggerPacket(::google::protobuf::Message* packet);
 		::google::protobuf::Message* GetPakcet(int Id);
 	private:
+		//std::mutex m_PacketLocker;
 		std::unordered_map<std::string, std::function<::google::protobuf::Message*()>> Packet_CreateFactorStringMap;
 		std::unordered_map<int, std::function<::google::protobuf::Message*()>> Packet_CreateFactorMap;
 

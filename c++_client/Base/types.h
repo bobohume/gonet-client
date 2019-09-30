@@ -80,8 +80,8 @@ static const F32 GAMEPLAY_PERCENT_SCALE = 10000.0f;
 static const F32 GAMEPLAY_MAX_SCALE = 10.0f;
 
 
-const unsigned int MIN_PACKET_SIZE			= 128;
-const unsigned int MAX_PACKET_SIZE			= 2048;
+const unsigned int PACKET_MIN_SIZE			= 128;
+const unsigned int PACKET_MAX_SIZE			= 2048;
 const unsigned int COMMON_STRING_LENGTH		= 32;
 const unsigned int NETWORK_PROTOCOL_VERSION	= 1;
 const unsigned int MD5_STRING_LENGTH		= 16;
@@ -98,10 +98,10 @@ const unsigned int ACCOUNT_NAME_LENGTH		= 50;
 const unsigned int PASSWORD_LENGTH			= 32;
 const unsigned int MAX_NETBAR_DRAW			= 10;
 const unsigned int MAX_BADWORDS_LENGTH		= 250;
-const unsigned int MAX_PACKET_RECEIEVE_SIZE = 10 * 1024 * 1024;//鏈�澶ф帴鏀剁紦鍐叉睜
+const unsigned int MAX_PACKET_RECEIEVE_SIZE = 10 * 1024 * 1024;//最大接收缓冲池
 #define 	SimTime	 U32
 
-static const int MaxPacketBuffSize = MAX_PACKET_SIZE + 128;
+static const int MaxPacketBuffSize = PACKET_MAX_SIZE + 128;
 
 //--------------------------------------
 // Enable Asserts in all debug builds -- AFTER compiler types include.
@@ -371,7 +371,7 @@ inline void *dMemmove(void * dst, const void * src, size_t count)
 
 #define SAFE_DELETE(a) if( (a) != NULL ) delete (a); (a) = NULL;
 
-#define STDCALL __stdcall
+//#define STDCALL __stdcall
 
 #ifndef Offset
 /// Offset macro:

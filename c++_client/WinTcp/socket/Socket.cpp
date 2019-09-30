@@ -15,7 +15,7 @@ WinTcp::Socket::Socket ()
 
 WinTcp::Socket::Socket ( const char* host , int port )
 { 
-	strcpy_s(m_Host,host) ;
+	strcpy(m_Host,host) ;
 	m_Port = port;
 
 	create() ;	
@@ -43,7 +43,7 @@ bool WinTcp::Socket::reconnect ( const char* host , int port )
 	close();
 
 	// create new socket impl object
-	strcpy_s(m_Host,host);
+	strcpy(m_Host,host);
 	m_Port = port ;
 
 	create() ;
@@ -69,7 +69,7 @@ bool WinTcp::Socket::connect ()
 
 bool WinTcp::Socket::connect (const char* host, int port)
 { 
-	strcpy_s(m_Host,host);
+	strcpy(m_Host,host);
 	m_Port = port ;
 
 	return connect() ;

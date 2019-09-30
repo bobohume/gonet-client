@@ -46,9 +46,24 @@ U32 getCRC(unsigned char* buf, int nLength)
 	return crc ^ 0xFFFFFFFF;
 }
 
+
+// 字符全部转换为小写
+char* strlwr_d(char* src)
+{
+	char *orign = src;
+	for (; *src != '\0'; src++)
+	{
+		if (*src >= 'A' && *src <= 'Z') {
+			//*src += 0x20;
+			*src += 32;
+		}
+	}
+	return orign;
+}
+
 U32 Base::GetMessageCode(const char* szName)
 {
-	auto strName = strlwr(const_cast<char *>(szName));
+	auto strName = strlwr_d(const_cast<char *>(szName));
 	return getCRC((unsigned char*)strName, strlen(strName));
 }
 

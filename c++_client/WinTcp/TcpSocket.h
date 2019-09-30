@@ -15,7 +15,7 @@ public:
 
 protected:
 	char	m_pInBuffer[MAX_PACKET_RECEIEVE_SIZE];
-	int		m_nHalfSize;
+	int		m_nHalfSize;//不完整包总长度
 
 protected:
 	virtual void OnClear();
