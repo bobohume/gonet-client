@@ -32,7 +32,6 @@ void WinTcp::CTcpSocket::OnClear()
 	m_nHalfSize			= 0;			//初始化变量
 }
 
-#pragma optimize("",off) 
 void WinTcp::CTcpSocket::HandlePacket(const char* pInData, int nBufferSize)
 {
 	static char buff[MAX_PACKET_RECEIEVE_SIZE] = "";
@@ -117,4 +116,3 @@ ParsePacekt:
 		m_nHalfSize = 0;
 	}
 }
-#pragma optimize("",on) 
