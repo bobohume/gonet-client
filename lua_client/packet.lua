@@ -41,7 +41,7 @@ end
 
 --发送包函数
 function SendPacket(name, packet
-    id = crc32.Gen(string.lower(name))
+    id = CRC32.hash(string.lower(name))
     packetName = "message." .. name
     if packetName ~= nil then
         local bytes = pb.encode(packetName, packet)
