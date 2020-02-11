@@ -4,7 +4,8 @@
 #include "ISocket.h"
 
 static unsigned char s_tcp_end[32] = { 240,159,146,158,226,153,161 };
-#define  TCP_END ((char *)s_tcp_end) //解决tpc粘包半包,结束标志
+#define  TCP_END ((char *)s_tcp_end)		//解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
+#define  TCP_HEAD_SIZE 4					//解决tpc粘包半包,包头固定长度
 #define  TCP_END_LENGTH strlen(TCP_END) //tcp结束标志长度
 namespace WinTcp {
 

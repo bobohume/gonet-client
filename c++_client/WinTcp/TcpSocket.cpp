@@ -1,6 +1,7 @@
 ﻿#include "TcpSocket.h"
 #include <assert.h>
 #include "message/Packet.h"
+#include "Base/binary.h"
 
 #ifndef _WIN32
 #if !defined(ANDROID)
@@ -46,7 +47,61 @@ void WinTcp::CTcpSocket::HandlePacket(const char* pInData, int nBufferSize)
 	}
 }
 
-int memstr(const char* pInData, int nInDataSize, const char* pFindData, int nFindDataSize) {
+void seekToTcpEnd(const char* pInData, int nBufferSize, bool &bFind, int& nPacketSize) {
+	if (nBufferSize >= TCP_HEAD_SIZE) {
+		int nSize = Base::LITTLE->Uint32((char*)pInData);
+		if (nSize + TCP_HEAD_SIZE <= nBufferSize) {
+			bFind = true;
+			nPacketSize = nSize + TCP_HEAD_SIZE;
+			return;
+		}
+	}
+	bFind = false;
+	nPacketSize = 0;
+	return;
+}
+
+void WinTcp::CTcpSocket::ReceivePacket(const char *pInData, int nInDataSize)
+{
+	if (!pInData || nInDataSize <= 0)
+	{
+		CCLOG("CTcpSocket::ReceivePacket(), parse packet error!");
+		return;				//有错误
+	}
+
+	int nCurSize = 0;
+	memcpy(&m_pInBuffer[m_nHalfSize], pInData, nInDataSize);
+	m_nHalfSize += nInDataSize;
+	m_pInBuffer[m_nHalfSize] = '\0';
+
+ParsePacekt:
+	int nPacketSize = 0;
+	int nBufferSize = m_nHalfSize - nCurSize;
+	bool bFindFlag = false;
+	seekToTcpEnd(&m_pInBuffer[nCurSize], nBufferSize, bFindFlag, nPacketSize);
+	if (bFindFlag) {
+		if (nBufferSize == nPacketSize) {		//完整包
+			HandlePacket(&m_pInBuffer[nCurSize + TCP_HEAD_SIZE], nPacketSize - TCP_HEAD_SIZE);
+			m_nHalfSize = 0;
+		}
+		else if (nBufferSize > nPacketSize) {
+			HandlePacket(&m_pInBuffer[nCurSize + TCP_HEAD_SIZE], nPacketSize - TCP_HEAD_SIZE);
+			nCurSize += nPacketSize;
+			goto ParsePacekt;
+		}
+	}
+	else if (nBufferSize < MAX_PACKET_RECEIEVE_SIZE) {
+		memmove(m_pInBuffer, &m_pInBuffer[nCurSize], m_nHalfSize - nCurSize);
+		m_pInBuffer[m_nHalfSize - nCurSize] = '\0';
+		m_nHalfSize = m_nHalfSize - nCurSize;
+	}
+	else {
+		CCLOG("超出最大包限制，丢弃该包");
+		m_nHalfSize = 0;
+	}
+}
+//tcp粘包特殊结束标志
+/*int memstr(const char* pInData, int nInDataSize, const char* pFindData, int nFindDataSize) {
 	char* pData = (char *)pInData;
 	int nDataSize = nInDataSize;
 FindStr:
@@ -97,11 +152,11 @@ ParsePacekt:
 	seekToTcpEnd(&m_pInBuffer[nCurSize], nBufferSize, bFindFlag, nPacketSize);
 	if (bFindFlag) {
 		if (nBufferSize == nPacketSize) {		//完整包
-			HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
+			HandlePacket(&m_pInBuffer[nCurSize], nPacketSize - TCP_END_LENGTH);
 			m_nHalfSize = 0;
 		}
 		else if (nBufferSize > nPacketSize) {
-			HandlePacket(m_pInBuffer, nPacketSize - TCP_END_LENGTH);
+			HandlePacket(&m_pInBuffer[nCurSize], nPacketSize - TCP_END_LENGTH);
 			nCurSize += nPacketSize;
 			goto ParsePacekt;
 		}
@@ -115,4 +170,4 @@ ParsePacekt:
 		CCLOG("超出最大包限制，丢弃该包");
 		m_nHalfSize = 0;
 	}
-}
+}*/
