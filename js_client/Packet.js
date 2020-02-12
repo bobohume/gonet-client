@@ -159,7 +159,7 @@ function ReceivePacket(dat){
         }
 
         var nSize = BytesToInt(dat.slice(0, 4))
-        if (nSize + base.TCP_HEAD_SIZE <= nLen){
+        if (nSize + TCP_HEAD_SIZE <= nLen){
             return nSize + TCP_HEAD_SIZE;
         }
         return 0;
