@@ -57,7 +57,7 @@ function init():void{
 function LoginAccount(){
 	var AccountName = "test130003";
 	var packet1 =  message.C_A_LoginRequest.create();
-	packet1.PacketHead = Packet.BuildPacketHead(0, message.SERVICE.ACCOUNTSERVER);
+	packet1.PacketHead = Packet.BuildPacketHead(0);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = "1,5,1,1";
 	packet1.SocketId = 0;

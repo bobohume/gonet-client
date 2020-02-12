@@ -38,12 +38,11 @@ function indexOfMulti (data : any, searchElements : any, fromIndex:any = 0) :num
 
 export namespace Packet{
     //创建包头
-    export function BuildPacketHead(Id:number, DestServerType : number=0):any{
+    export function BuildPacketHead(Id:number):any{
         var pHead =  message.Ipacket.create();
         pHead.Ckx = CKX;
         pHead.Stx = STX;
         pHead.Id = Id;
-        pHead.DestServerType = DestServerType;
         return pHead
     }
 
@@ -91,6 +90,30 @@ export namespace Packet{
             var packetcreator = m_packets[id];
             if (packetcreator != null){
                 var packet = packetcreator().encode(dat).finish();
+                var head =IntToBytes(packet.length + TCP_HEAD_SIZE);
+                var buff = new Uint8Array(TCP_HEAD_SIZE  + crc.length + packet.length);
+                buff.set(head, 0)
+                buff.set(crc, TCP_HEAD_SIZE);
+                buff.set(packet, TCP_HEAD_SIZE + crc.length);
+                buff.set(TCP_END, TCP_HEAD_SIZE + crc.length + packet.length);
+                Network.Send(buff);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //tcp粘包特殊结束标志
+    /*export function SendPacket(name : string, dat : any) : boolean{
+        var id = CRC32.str(name.toLowerCase());
+        var packetName = "message." + name;
+        if(packetName != null)
+        {
+            var packetcreator = m_packets[id];
+            var crc =IntToBytes(id);
+            var packetcreator = m_packets[id];
+            if (packetcreator != null){
+                var packet = packetcreator().encode(dat).finish();
                 var buff = new Uint8Array(crc.length + packet.length + TCP_END_LENGTH);
                 buff.set(crc, 0);
                 buff.set(packet, crc.length);
@@ -101,10 +124,60 @@ export namespace Packet{
             }
         }
         return false;
-    }
+    }*/
 
     //解析包
     export function ReceivePacket(dat : Uint8Array) : void{
+        function seekToTcpEnd(dat){
+            var nLen = dat.length;
+            if (nLen < TCP_HEAD_SIZE){
+                return 0;
+            }
+
+            var nSize = BytesToInt(dat.slice(0, 4))
+            if (nSize + TCP_HEAD_SIZE <= nLen){
+                return nSize + TCP_HEAD_SIZE;
+            }
+            return 0;
+        }
+
+        var buff = new Uint8Array(m_pInBuffer.length + dat.length);
+        buff.set(m_pInBuffer, 0);
+        buff.set(dat, m_pInBuffer.length);
+        m_pInBuffer = new Uint8Array(0);
+        var nCurSize = 0
+        function ParsePacekt(){
+            var nPacketSize = 0
+            var buff1 = buff.slice(nCurSize)
+            var nBufferSize = buff1.length;
+            nPacketSize = seekToTcpEnd(buff1)
+            //console.log(nPacketSize, nBufferSize, TCP_END_LENGTH)
+            if (nPacketSize != 0){
+                if(nBufferSize == nPacketSize){ //完整包
+                    //print(string.sub(buff1, TCP_HEAD_SIZE, nPacketSize))
+                    HandlePacket(buff1.slice(TCP_HEAD_SIZE, nPacketSize))
+                    nCurSize =  nCurSize + nPacketSize
+                }
+                else if (nBufferSize > nPacketSize){
+                    //print(string.sub(buff1, TCP_HEAD_SIZE, nPacketSize))
+                    HandlePacket(buff1.slice(TCP_HEAD_SIZE, nPacketSize))
+                    nCurSize =  nCurSize + nPacketSize
+                    ParsePacekt();
+                }
+                else if(nBufferSize < 128 * 1024){
+                    m_pInBuffer = buff.slice(nCurSize)
+                }
+                else{
+                    console.log("超出最大包限制，丢弃该包")
+                }
+            }
+        }
+
+        ParsePacekt();
+    };
+
+    //tcp粘包特殊结束标志
+    /*export function ReceivePacket(dat : Uint8Array) : void{
         function seekToTcpEnd(dat){
             var nCurLen = indexOfMulti(dat, TCP_END);
             if(nCurLen != -1){
@@ -146,7 +219,7 @@ export namespace Packet{
         }
 
         ParsePacekt();
-    };
+    };*/
 
     //--protobuf-- 自动化解析
     export function RegisterPacketCreator(name : string, func :any) : void{
@@ -156,8 +229,9 @@ export namespace Packet{
 }
 
 //var TCP_END  = "💞♡";
-var TCP_END = new Uint8Array(7);
+var TCP_END = new Uint8Array(7);//解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
 TCP_END.set( [240,159,146,158,226,153,161],0);
+var TCP_HEAD_SIZE = 4;                  //解决tpc粘包半包,包头固定长度
 var TCP_END_LENGTH  = TCP_END.length;
 var m_pInBuffer = new Uint8Array(0);
 var m_callbacks = new Array();
