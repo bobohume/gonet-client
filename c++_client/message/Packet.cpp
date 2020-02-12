@@ -32,11 +32,10 @@ int Packet::Decode(char* buff)
 	return Id;
 }
 
-void Packet::BuildPacketHead(Ipacket* packetHead, int64_t id, int destservertype/*= WORLDSERVER*/) {
+void Packet::BuildPacketHead(Ipacket* packetHead, int64_t id) {
 	packetHead->set_id(id);
 	packetHead->set_ckx(114);
 	packetHead->set_stx(39);
-	packetHead->set_destservertype(destservertype);
 }
 
 void Packet::RegisterPacket(::google::protobuf::Message* packet) {

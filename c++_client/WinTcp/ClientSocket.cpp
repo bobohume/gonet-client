@@ -101,12 +101,24 @@ bool WinTcp::ClientSocket::Send(::google::protobuf::Message* packet)
 	char buff[PACKET_MAX_SIZE] = "";
 	int nPacketSize = Packet::Encode(packet, buff);
 	delete packet;
-	memcpy(&buff[nPacketSize], TCP_END, TCP_END_LENGTH);
-	//strcat(buff, TCP_END);
-	nPacketSize = nPacketSize + TCP_END_LENGTH;
 	buff[nPacketSize] = '\0';
 	return Send(buff, nPacketSize);
 }
+
+//tcp粘包特殊结束标志
+/*bool WinTcp::ClientSocket::Send(::google::protobuf::Message* packet)
+{
+	if (!packet)
+		return false;
+
+	char buff[PACKET_MAX_SIZE] = "";
+	int nPacketSize = Packet::Encode(packet, buff);
+	delete packet;
+	memcpy(&buff[nPacketSize], TCP_END, TCP_END_LENGTH);
+	nPacketSize = nPacketSize + TCP_END_LENGTH;
+	buff[nPacketSize] = '\0';
+	return Send(buff, nPacketSize);
+}*/
 
 int WinTcp::ClientSocket::Connect(const char* szServerAddr, int nServerPort)
 {
