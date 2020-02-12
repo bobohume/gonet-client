@@ -31,6 +31,7 @@ end
 --处理包函数
 function HandlePacket(dat)
     id = bytes_to_int(string.sub(dat, 0, 4))
+    --id = bytes_to_int(string.sub(dat, 1, 4)) lua 坐标从1开始，0和1处理效果一样
     buff = string.sub(dat, 5)
     packetName = m_PacketCreateMap[id]
     if packetName ~= nil then
