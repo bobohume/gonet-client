@@ -12,7 +12,7 @@ var Socket = {};
 	//this.testhost = "ws://echo.websocket.org"
 	Socket = new Laya.Socket();
 	Socket.endian = Laya.Byte.LITTLE_ENDIAN;
-	Socket.connectByUrl("ws://192.168.84.62:31700/ws");//建立连接
+	Socket.connectByUrl("ws://localhost:31700/ws");//建立连接
 	Socket.on(Laya.Event.OPEN, this, function(evt){
 		console.log('Network onopen...');
 		{
@@ -56,7 +56,7 @@ function Close() {
 function LoginAccount(){
 	var AccountName = "test130003";
 	var packet1 =  gamepb.message.C_A_LoginRequest.create();
-	packet1.PacketHead = Packet.BuildPacketHead(0, Packet.SERVICE_ACCOUNTSERVER);
+	packet1.PacketHead = Packet.BuildPacketHead(0);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = "1,5,1,1";
 	packet1.SocketId = 0;
