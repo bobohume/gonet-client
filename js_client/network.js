@@ -67,7 +67,7 @@ function Close() {
 function LoginAccount(){
 	var AccountName = "test130003";
 	var packet1 =  clientpb.message.C_A_LoginRequest.create();
-	packet1.PacketHead = Packet.BuildPacketHead(0, Packet.SERVICE_ACCOUNTSERVER);
+	packet1.PacketHead = Packet.BuildPacketHead(0);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = "1,5,1,1";
 	packet1.SocketId = 0;
