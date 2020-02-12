@@ -6,9 +6,9 @@ m_PacketMap = {}
 
 
 -- 加载pb
-assert(pb.loadfile "./../../message/pb/message.pb")
-assert(pb.loadfile "./../../message/pb/game.pb")
-assert(pb.loadfile "./../../message/pb/client.pb")
+assert(pb.loadfile "./pb/message.pb")
+assert(pb.loadfile "./pb/game.pb")
+assert(pb.loadfile "./pb/client.pb")
 
 --创建包头
 function BuildPacketHead(id, destservertype)
@@ -40,7 +40,18 @@ function HandlePacket(dat)
 end
 
 --发送包函数
-function SendPacket(name, packet
+function SendPacket(name, packet)
+    id = CRC32.hash(string.lower(name))
+    packetName = "message." .. name
+    if packetName ~= nil then
+        local bytes = pb.encode(packetName, packet)
+        bytes = int_to_bytes(#bytes + 4) .. int_to_bytes(id) .. bytes
+        CLIENTSOCKET:Send(bytes)
+    end
+end
+
+--[[tcp粘包特殊结束标志
+function SendPacket(name, packet)
     id = CRC32.hash(string.lower(name))
     packetName = "message." .. name
     if packetName ~= nil then
@@ -49,6 +60,7 @@ function SendPacket(name, packet
         CLIENTSOCKET:Send(bytes)
     end
 end
+--]]
 
 function bytes_to_int(str,endian,signed) -- use length of string to determine 8,16,32,64 bits
     local t={str:byte(1,-1)}
@@ -72,10 +84,11 @@ end
 function int_to_bytes(num,endian,signed)
     if num<0 and not signed then num=-num print"warning, dropping sign from number converting to unsigned" end
     local res={}
-    local n = math.ceil(select(2,math.frexp(num))/8) -- number of bytes to be used.
+    local n = 4--math.ceil(select(2,math.frexp(num))/8) -- number of bytes to be used.
     if signed and num < 0 then
         num = num + 2^n
     end
+
     for k=n,1,-1 do -- 256 = 2^8 bits per char.
         local mul=2^(8*(k-1))
         res[k]=math.floor(num/mul)
@@ -89,6 +102,7 @@ function int_to_bytes(num,endian,signed)
         end
         res=t
     end
+
     return string.char(table.unpack(res))
 end
 

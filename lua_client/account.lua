@@ -30,7 +30,7 @@ end
 --RegisterPacket("C_W_CreatePlayerRequest", nil)
 --RegisterPacket("C_W_Game_LoginRequset", nil)
 --登录回调
-RegisterPacket("A_C_LoginRequest", function(packet)
+RegisterPacket("A_C_LoginResponse", function(packet)
     if packet.Error == ACCOUNT_NOEXIST then
         packet1 = {PacketHead=BuildPacketHead(0, SERVICE_ACCOUNTSERVER),
                         AccountName=AccountName, SocketId=0}
