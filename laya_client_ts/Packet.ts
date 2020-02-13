@@ -263,3 +263,6 @@ Packet.RegisterPacketCreator("C_A_RegisterRequest", function(){
 Packet.RegisterPacketCreator("C_W_Game_LoginRequset", function(){
     return message.C_W_Game_LoginRequset;
 })
+Packet.RegisterPacketCreator("C_W_Game_LoginRequset", function(){
+    return message.C_W_Game_LoginRequset;
+})

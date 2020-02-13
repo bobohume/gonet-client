@@ -285,6 +285,9 @@ RegisterPacketCreator("C_A_RegisterRequest", function(){
 RegisterPacketCreator("C_W_Game_LoginRequset", function(){
     return gamepb.message.C_W_Game_LoginRequset;
 })
+RegisterPacketCreator("C_W_Game_LoginRequset", function(){
+    return gamepb.message.C_W_Game_LoginRequset;
+})
 
 module.exports.RegisterPacket = RegisterPacket;
 module.exports.BuildPacketHead = BuildPacketHead;

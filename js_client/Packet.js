@@ -275,7 +275,9 @@ RegisterPacketCreator("C_W_CreatePlayerRequest", function(){
 RegisterPacketCreator("C_A_RegisterRequest", function(){
     return clientpb.message.C_A_RegisterRequest;
 })
-
+RegisterPacketCreator("C_W_Game_LoginRequset", function(){
+    return clientpb.message.C_W_Game_LoginRequset;
+})
 module.exports.RegisterPacket = RegisterPacket;
 module.exports.BuildPacketHead = BuildPacketHead;
 module.exports.SendPacket = SendPacket;
