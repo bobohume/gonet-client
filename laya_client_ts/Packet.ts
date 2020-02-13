@@ -85,7 +85,6 @@ export namespace Packet{
         var packetName = "message." + name;
         if(packetName != null)
         {
-            var packetcreator = m_packets[id];
             var crc =IntToBytes(id);
             var packetcreator = m_packets[id];
             if (packetcreator != null){
@@ -95,7 +94,6 @@ export namespace Packet{
                 buff.set(head, 0)
                 buff.set(crc, TCP_HEAD_SIZE);
                 buff.set(packet, TCP_HEAD_SIZE + crc.length);
-                buff.set(TCP_END, TCP_HEAD_SIZE + crc.length + packet.length);
                 Network.Send(buff);
                 return true;
             }
@@ -109,7 +107,6 @@ export namespace Packet{
         var packetName = "message." + name;
         if(packetName != null)
         {
-            var packetcreator = m_packets[id];
             var crc =IntToBytes(id);
             var packetcreator = m_packets[id];
             if (packetcreator != null){
@@ -228,11 +225,11 @@ export namespace Packet{
     };
 }
 
-//var TCP_END  = "💞♡";
-var TCP_END = new Uint8Array(7);//解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
+//tcp粘包特殊结束标志
+/*var TCP_END = new Uint8Array(7);      //解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
 TCP_END.set( [240,159,146,158,226,153,161],0);
+var TCP_END_LENGTH  = TCP_END.length;*/
 var TCP_HEAD_SIZE = 4;                  //解决tpc粘包半包,包头固定长度
-var TCP_END_LENGTH  = TCP_END.length;
 var m_pInBuffer = new Uint8Array(0);
 var m_callbacks = new Array();
 var m_packets = new Array();

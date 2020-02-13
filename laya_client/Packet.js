@@ -6,12 +6,6 @@ var gamepb= require("./pb/game");
 
 var STX = 0X27;
 var CKX = 0x72;
-var SERVICE_NONE          = 0;
-var SERVICE_CLIENT        = 1;
-var SERVICE_GATESERVER    = 2;
-var SERVICE_ACCOUNTSERVER = 3;
-var SERVICE_WORLDSERVER   = 4;
-var SERVICE_MONITORSERVER = 5;
 
 Uint8Array.prototype.indexOfMulti = function(searchElements, fromIndex) {
     fromIndex = fromIndex || 0;
@@ -113,7 +107,6 @@ function SendPacket(name, dat){
     var packetName = "message." + name;
     if(packetName != null)
     {
-        var packetcreator = m_packets[id];
         var crc =IntToBytes(id);
         var packetcreator = m_packets[id];
         if (packetcreator != null){
@@ -123,7 +116,6 @@ function SendPacket(name, dat){
             buff.set(head, 0)
             buff.set(crc, TCP_HEAD_SIZE);
             buff.set(packet, TCP_HEAD_SIZE + crc.length);
-            buff.set(TCP_END, TCP_HEAD_SIZE + crc.length + packet.length);
             Network.Send(buff);
             return true;
         }
@@ -137,7 +129,6 @@ function SendPacket(name, dat){
     var packetName = "message." + name;
     if(packetName != null)
     {
-        var packetcreator = m_packets[id];
         var crc =IntToBytes(id);
         var packetcreator = m_packets[id];
         if (packetcreator != null){
@@ -250,11 +241,11 @@ function ReceivePacket(dat){
     ParsePacekt();
 };*/
 
-//var TCP_END  = "💞♡";
-var TCP_END = new Uint8Array(7);--解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
+//tcp粘包特殊结束标志
+/*var TCP_END = new Uint8Array(7);      //解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
 TCP_END.set( [240,159,146,158,226,153,161],0);
-var TCP_HEAD_SIZE = 4;                  --解决tpc粘包半包,包头固定长度
-var TCP_END_LENGTH  = TCP_END.length;
+var TCP_END_LENGTH  = TCP_END.length;*/
+var TCP_HEAD_SIZE = 4;                  //解决tpc粘包半包,包头固定长度
 var m_pInBuffer = new Uint8Array();
 var m_callbacks = new Array();
 var m_packets = new Array();
@@ -300,6 +291,3 @@ module.exports.BuildPacketHead = BuildPacketHead;
 module.exports.SendPacket = SendPacket;
 module.exports.ReceivePacket = ReceivePacket;
 module.exports.RegisterPacketCreator = RegisterPacketCreator;
-module.exports.SERVICE_GATESERVER = SERVICE_GATESERVER;
-module.exports.SERVICE_ACCOUNTSERVER = SERVICE_ACCOUNTSERVER;
-module.exports.SERVICE_WORLDSERVER = SERVICE_WORLDSERVER;
