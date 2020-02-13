@@ -80,7 +80,7 @@ function LoginAccount(){
 //角色登录
 function LoginGame(){
 	var packet1 = gamepb.message.C_W_Game_LoginRequset.create();
-		packet1.PacketHead = Packet.BuildPacketHead(AccountId);
-		packet1.PlayerId = PlayerId;
-		Packet.SendPacket("C_W_Game_LoginRequset", packet1)
+	packet1.PacketHead = Packet.BuildPacketHead(AccountId);
+	packet1.PlayerId = PlayerId;
+	Packet.SendPacket("C_W_Game_LoginRequset", packet1)
 };
