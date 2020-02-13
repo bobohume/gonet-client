@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"gonet/base"
+	"fmt"
 	"gonet/message"
 	"gonet/network"
 	"os"
@@ -14,9 +14,9 @@ var (
 	CLIENT *network.ClientSocket
 )
 func main() {
-	message.Init()
+	message.InitClient()
 	cfg := &base.Config{}
-	cfg.Read("SXZ_SERVER.CFG")
+	cfg.Read("GONET_SERVER.CFG")
 	UserNetIP, UserNetPort := cfg.Get2("NetGate_WANAddress", ":")
 	//UserNetIP, UserNetPort := "101.132.178.159", "31700"
 	port,_ := strconv.Atoi(UserNetPort)
