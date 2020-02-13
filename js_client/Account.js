@@ -46,7 +46,7 @@ Packet.RegisterPacket("A_C_LoginResponse", function(packet){
 	console.log(packet);
 	if (packet.Error == 2){
 		var packet1 = clientpb.message.C_A_RegisterRequest.create();
-		packet1.PacketHead = Packet.BuildPacketHead(0, Packet);
+		packet1.PacketHead = Packet.BuildPacketHead(0);
 		packet1.AccountName = "test130003";
 		packet1.SocketId = 0;
 		Packet.SendPacket("C_A_RegisterRequest", packet1);
@@ -70,7 +70,7 @@ Packet.RegisterPacket("W_C_ChatMessage",function(packet){
 function LoginAccount(){
 	var AccountName = "test130003";
 	var packet1 =  clientpb.message.C_A_LoginRequest.create();
-	packet1.PacketHead = Packet.BuildPacketHead(0, Packet);
+	packet1.PacketHead = Packet.BuildPacketHead(0);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = BUILD_NO;
 	packet1.SocketId = 0;
@@ -80,7 +80,7 @@ function LoginAccount(){
 //角色登录
 function LoginGame(){
 	var packet1 = clientpb.message.C_W_Game_LoginRequset.create();
-		packet1.PacketHead = Packet.BuildPacketHead(AccountId);
-		packet1.PlayerId = PlayerId;
-		Packet.SendPacket("C_W_Game_LoginRequset", packet1)
+	packet1.PacketHead = Packet.BuildPacketHead(AccountId);
+	packet1.PlayerId = PlayerId;
+	Packet.SendPacket("C_W_Game_LoginRequset", packet1)
 };
