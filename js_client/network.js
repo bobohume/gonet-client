@@ -13,7 +13,7 @@ var Socket = {};
 	console.log('Network initSocket...');
 	//this.host = "ws://192.168.1.122:21001";;
 	//this.testhost = "ws://echo.websocket.org"
-	Socket = new ws("ws://192.168.84.62:31700/ws", {
+	Socket = new ws("ws://localhost:31700/ws", {
 		origin: 'http://localhost/'
 	});
 

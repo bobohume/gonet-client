@@ -35,14 +35,14 @@ Packet.RegisterPacket("W_C_SelectPlayerResponse", function(packet){
 Packet.RegisterPacket("W_C_CreatePlayerResponse", function(packet){
 	console.log(packet);
 	if (packet.Error == 0){
-		PlayerId = packet.PlayerData[0].PlayerID;
+		PlayerId = packet.PlayerID;
 		LoginGame();
 	}else{//创建失败
 	}
 });
 
 //账号登录反馈
-Packet.RegisterPacket("A_C_LoginRequest", function(packet){
+Packet.RegisterPacket("A_C_LoginResponse", function(packet){
 	console.log(packet);
 	if (packet.Error == 2){
 		var packet1 = clientpb.message.C_A_RegisterRequest.create();

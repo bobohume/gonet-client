@@ -119,7 +119,6 @@ function SendPacket(name, dat){
             buff.set(head, 0)
             buff.set(crc, TCP_HEAD_SIZE);
             buff.set(packet, TCP_HEAD_SIZE + crc.length);
-            buff.set(TCP_END, TCP_HEAD_SIZE + crc.length + packet.length);
             Network.Send(buff);
             return true;
         }
@@ -245,9 +244,9 @@ function ReceivePacket(dat){
 };*/
 
 //var TCP_END  = "💞♡";
-var TCP_END = new Uint8Array(7);
+var TCP_END = new Uint8Array(7);//解决tpc粘包半包,特殊结束标志,pb采用Varint编码高位有特殊含义
 TCP_END.set( [240,159,146,158,226,153,161],0);
-var TCP_END_LENGTH  = TCP_END.length;
+var TCP_HEAD_SIZE = 4;                  //解决tpc粘包半包,包头固定长度
 var m_pInBuffer = new Uint8Array();
 var m_callbacks = new Array();
 var m_packets = new Array();
@@ -269,8 +268,8 @@ RegisterPacketCreator("W_C_CreatePlayerResponse", function(){
 RegisterPacketCreator("W_C_ChatMessage", function(){
     return clientpb.message.W_C_ChatMessage;
 })
-RegisterPacketCreator("A_C_LoginRequest", function(){
-    return clientpb.message.A_C_LoginRequest;
+RegisterPacketCreator("A_C_LoginResponse", function(){
+    return clientpb.message.A_C_LoginResponse;
 })
 RegisterPacketCreator("A_C_RegisterResponse", function(){
     return clientpb.message.A_C_RegisterResponse;
