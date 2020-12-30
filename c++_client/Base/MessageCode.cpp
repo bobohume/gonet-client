@@ -46,8 +46,6 @@ U32 getCRC(unsigned char* buf, int nLength)
 	return crc ^ 0xFFFFFFFF;
 }
 
-
-// 字符全部转换为小写
 char* strlwr_d(char* src)
 {
 	char *orign = src;
@@ -75,4 +73,18 @@ void GetMessageCodeSimple(const char* szName, U32& m1)
 U32 GetMessageCodeSimple(const char* szName)
 {
 	return getCRC((unsigned char*)szName, strlen(szName));
+}
+
+std::string Base::ToSlat(std::string accountName, std::string pwd)
+{
+	char buf[128] = {0};
+	sprintf(buf, "%s__%s", accountName.c_str(), pwd.c_str());
+	return std::string(buf);
+}
+
+U32 Base::ToCrc(std::string accountName, std::string pwd, std::string buildNo, U64 nTime)
+{
+	char buf[256] = { 0 };
+	sprintf(buf, "%s_%s_%s_%d", accountName.c_str(), pwd.c_str(), buildNo.c_str(), nTime);
+	return GetMessageCode(buf);
 }

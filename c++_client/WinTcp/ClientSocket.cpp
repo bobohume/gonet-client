@@ -157,7 +157,7 @@ int WinTcp::ClientSocket::Connect(const char* szServerAddr, int nServerPort)
 
 	m_sendConnected = true;
 	m_isConnecting = false;
-	ACCOUNT->LoginAccount();
+	ACCOUNT->LoginGate();
 
 	/*#ifdef _WIN32
 	m_hConnectThread = CreateThread(NULL, 0, _ConnectThread, NULL, 0, NULL);

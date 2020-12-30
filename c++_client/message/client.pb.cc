@@ -20,6 +20,16 @@
 #endif
 // @@protoc_insertion_point(includes)
 namespace message {
+class C_G_LoginResquestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<C_G_LoginResquest>
+      _instance;
+} _C_G_LoginResquest_default_instance_;
+class G_C_LoginResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<G_C_LoginResponse>
+      _instance;
+} _G_C_LoginResponse_default_instance_;
 class C_A_LoginRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<C_A_LoginRequest>
@@ -82,6 +92,50 @@ class W_C_TestDefaultTypeInternal {
 } _W_C_Test_default_instance_;
 }  // namespace message
 namespace protobuf_client_2eproto {
+void InitDefaultsC_G_LoginResquestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_message_2eproto::InitDefaultsIpacket();
+  {
+    void* ptr = &::message::_C_G_LoginResquest_default_instance_;
+    new (ptr) ::message::C_G_LoginResquest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::message::C_G_LoginResquest::InitAsDefaultInstance();
+}
+
+void InitDefaultsC_G_LoginResquest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsC_G_LoginResquestImpl);
+}
+
+void InitDefaultsG_C_LoginResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_message_2eproto::InitDefaultsIpacket();
+  {
+    void* ptr = &::message::_G_C_LoginResponse_default_instance_;
+    new (ptr) ::message::G_C_LoginResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::message::G_C_LoginResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsG_C_LoginResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsG_C_LoginResponseImpl);
+}
+
 void InitDefaultsC_A_LoginRequestImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -346,9 +400,23 @@ void InitDefaultsW_C_Test() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsW_C_TestImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[12];
+::google::protobuf::Metadata file_level_metadata[14];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_G_LoginResquest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_G_LoginResquest, packethead_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_G_LoginResquest, key_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::G_C_LoginResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::G_C_LoginResponse, packethead_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::G_C_LoginResponse, key_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -356,8 +424,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, packethead_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, accountname_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, password_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, buildno_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, socketid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_LoginRequest, key_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_LoginResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -365,7 +434,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_LoginResponse, packethead_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_LoginResponse, error_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_LoginResponse, socketid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_LoginResponse, accountname_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_RegisterRequest, _internal_metadata_),
@@ -374,7 +442,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_RegisterRequest, packethead_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_RegisterRequest, accountname_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_RegisterRequest, socketid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_A_RegisterRequest, password_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_RegisterResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -382,7 +450,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_RegisterResponse, packethead_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_RegisterResponse, error_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::A_C_RegisterResponse, socketid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::C_W_CreatePlayerRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -450,21 +517,25 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::message::W_C_Test, recv_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::message::C_A_LoginRequest)},
-  { 9, -1, sizeof(::message::A_C_LoginResponse)},
-  { 18, -1, sizeof(::message::C_A_RegisterRequest)},
-  { 26, -1, sizeof(::message::A_C_RegisterResponse)},
-  { 34, -1, sizeof(::message::C_W_CreatePlayerRequest)},
-  { 42, -1, sizeof(::message::W_C_CreatePlayerResponse)},
-  { 50, -1, sizeof(::message::C_W_Game_LoginRequset)},
-  { 57, -1, sizeof(::message::W_C_SelectPlayerResponse)},
-  { 65, -1, sizeof(::message::C_G_LogoutResponse)},
-  { 71, -1, sizeof(::message::C_W_ChatMessage)},
-  { 81, -1, sizeof(::message::W_C_ChatMessage)},
-  { 93, -1, sizeof(::message::W_C_Test)},
+  { 0, -1, sizeof(::message::C_G_LoginResquest)},
+  { 7, -1, sizeof(::message::G_C_LoginResponse)},
+  { 14, -1, sizeof(::message::C_A_LoginRequest)},
+  { 24, -1, sizeof(::message::A_C_LoginResponse)},
+  { 32, -1, sizeof(::message::C_A_RegisterRequest)},
+  { 40, -1, sizeof(::message::A_C_RegisterResponse)},
+  { 47, -1, sizeof(::message::C_W_CreatePlayerRequest)},
+  { 55, -1, sizeof(::message::W_C_CreatePlayerResponse)},
+  { 63, -1, sizeof(::message::C_W_Game_LoginRequset)},
+  { 70, -1, sizeof(::message::W_C_SelectPlayerResponse)},
+  { 78, -1, sizeof(::message::C_G_LogoutResponse)},
+  { 84, -1, sizeof(::message::C_W_ChatMessage)},
+  { 94, -1, sizeof(::message::W_C_ChatMessage)},
+  { 106, -1, sizeof(::message::W_C_Test)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&::message::_C_G_LoginResquest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::message::_G_C_LoginResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::message::_C_A_LoginRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::message::_A_C_LoginResponse_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::message::_C_A_RegisterRequest_default_instance_),
@@ -495,47 +566,50 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 12);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 14);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\014client.proto\022\007message\032\rmessage.proto\"p"
-      "\n\020C_A_LoginRequest\022$\n\nPacketHead\030\001 \001(\0132\020"
-      ".message.Ipacket\022\023\n\013AccountName\030\002 \001(\t\022\017\n"
-      "\007BuildNo\030\003 \001(\t\022\020\n\010SocketId\030\004 \001(\005\"o\n\021A_C_"
-      "LoginResponse\022$\n\nPacketHead\030\001 \001(\0132\020.mess"
-      "age.Ipacket\022\r\n\005Error\030\002 \001(\005\022\020\n\010SocketId\030\003"
-      " \001(\005\022\023\n\013AccountName\030\004 \001(\t\"b\n\023C_A_Registe"
+      "\n\014client.proto\022\007message\032\rmessage.proto\"F"
+      "\n\021C_G_LoginResquest\022$\n\nPacketHead\030\001 \001(\0132"
+      "\020.message.Ipacket\022\013\n\003Key\030\002 \001(\003\"F\n\021G_C_Lo"
+      "ginResponse\022$\n\nPacketHead\030\001 \001(\0132\020.messag"
+      "e.Ipacket\022\013\n\003Key\030\002 \001(\003\"}\n\020C_A_LoginReque"
+      "st\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ipacket"
+      "\022\023\n\013AccountName\030\002 \001(\t\022\020\n\010Password\030\003 \001(\t\022"
+      "\017\n\007BuildNo\030\005 \001(\t\022\013\n\003Key\030\006 \001(\003\"]\n\021A_C_Log"
+      "inResponse\022$\n\nPacketHead\030\001 \001(\0132\020.message"
+      ".Ipacket\022\r\n\005Error\030\002 \001(\005\022\023\n\013AccountName\030\004"
+      " \001(\t\"b\n\023C_A_RegisterRequest\022$\n\nPacketHea"
+      "d\030\001 \001(\0132\020.message.Ipacket\022\023\n\013AccountName"
+      "\030\002 \001(\t\022\020\n\010Password\030\003 \001(\t\"K\n\024A_C_Register"
+      "Response\022$\n\nPacketHead\030\001 \001(\0132\020.message.I"
+      "packet\022\r\n\005Error\030\002 \001(\005\"`\n\027C_W_CreatePlaye"
       "rRequest\022$\n\nPacketHead\030\001 \001(\0132\020.message.I"
-      "packet\022\023\n\013AccountName\030\002 \001(\t\022\020\n\010SocketId\030"
-      "\003 \001(\005\"]\n\024A_C_RegisterResponse\022$\n\nPacketH"
-      "ead\030\001 \001(\0132\020.message.Ipacket\022\r\n\005Error\030\002 \001"
-      "(\005\022\020\n\010SocketId\030\003 \001(\005\"`\n\027C_W_CreatePlayer"
-      "Request\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ip"
-      "acket\022\022\n\nPlayerName\030\002 \001(\t\022\013\n\003Sex\030\003 \001(\005\"a"
-      "\n\030W_C_CreatePlayerResponse\022$\n\nPacketHead"
-      "\030\001 \001(\0132\020.message.Ipacket\022\r\n\005Error\030\002 \001(\005\022"
-      "\020\n\010PlayerId\030\003 \001(\003\"O\n\025C_W_Game_LoginRequs"
-      "et\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ipacket"
-      "\022\020\n\010PlayerId\030\002 \001(\003\"|\n\030W_C_SelectPlayerRe"
-      "sponse\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ipa"
-      "cket\022\021\n\tAccountId\030\002 \001(\003\022\'\n\nPlayerData\030\003 "
-      "\003(\0132\023.message.PlayerData\":\n\022C_G_LogoutRe"
-      "sponse\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ipa"
-      "cket\"}\n\017C_W_ChatMessage\022$\n\nPacketHead\030\001 "
-      "\001(\0132\020.message.Ipacket\022\016\n\006Sender\030\002 \001(\003\022\016\n"
-      "\006Recver\030\003 \001(\003\022\023\n\013MessageType\030\004 \001(\005\022\017\n\007Me"
-      "ssage\030\005 \001(\t\"\245\001\n\017W_C_ChatMessage\022$\n\nPacke"
-      "tHead\030\001 \001(\0132\020.message.Ipacket\022\016\n\006Sender\030"
-      "\002 \001(\003\022\022\n\nSenderName\030\003 \001(\t\022\016\n\006Recver\030\004 \001("
-      "\003\022\022\n\nRecverName\030\005 \001(\t\022\023\n\013MessageType\030\006 \001"
-      "(\005\022\017\n\007Message\030\007 \001(\t\"\030\n\010W_C_Test\022\014\n\004Recv\030"
-      "\001 \003(\005b\006proto3"
+      "packet\022\022\n\nPlayerName\030\002 \001(\t\022\013\n\003Sex\030\003 \001(\005\""
+      "a\n\030W_C_CreatePlayerResponse\022$\n\nPacketHea"
+      "d\030\001 \001(\0132\020.message.Ipacket\022\r\n\005Error\030\002 \001(\005"
+      "\022\020\n\010PlayerId\030\003 \001(\003\"O\n\025C_W_Game_LoginRequ"
+      "set\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ipacke"
+      "t\022\020\n\010PlayerId\030\002 \001(\003\"|\n\030W_C_SelectPlayerR"
+      "esponse\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ip"
+      "acket\022\021\n\tAccountId\030\002 \001(\003\022\'\n\nPlayerData\030\003"
+      " \003(\0132\023.message.PlayerData\":\n\022C_G_LogoutR"
+      "esponse\022$\n\nPacketHead\030\001 \001(\0132\020.message.Ip"
+      "acket\"}\n\017C_W_ChatMessage\022$\n\nPacketHead\030\001"
+      " \001(\0132\020.message.Ipacket\022\016\n\006Sender\030\002 \001(\003\022\016"
+      "\n\006Recver\030\003 \001(\003\022\023\n\013MessageType\030\004 \001(\005\022\017\n\007M"
+      "essage\030\005 \001(\t\"\245\001\n\017W_C_ChatMessage\022$\n\nPack"
+      "etHead\030\001 \001(\0132\020.message.Ipacket\022\016\n\006Sender"
+      "\030\002 \001(\003\022\022\n\nSenderName\030\003 \001(\t\022\016\n\006Recver\030\004 \001"
+      "(\003\022\022\n\nRecverName\030\005 \001(\t\022\023\n\013MessageType\030\006 "
+      "\001(\005\022\017\n\007Message\030\007 \001(\t\"\030\n\010W_C_Test\022\014\n\004Recv"
+      "\030\001 \003(\005b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1253);
+      descriptor, 1374);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "client.proto", &protobuf_RegisterTypes);
   ::protobuf_message_2eproto::AddDescriptors();
@@ -556,6 +630,596 @@ namespace message {
 
 // ===================================================================
 
+void C_G_LoginResquest::InitAsDefaultInstance() {
+  ::message::_C_G_LoginResquest_default_instance_._instance.get_mutable()->packethead_ = const_cast< ::message::Ipacket*>(
+      ::message::Ipacket::internal_default_instance());
+}
+void C_G_LoginResquest::clear_packethead() {
+  if (GetArenaNoVirtual() == NULL && packethead_ != NULL) {
+    delete packethead_;
+  }
+  packethead_ = NULL;
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int C_G_LoginResquest::kPacketHeadFieldNumber;
+const int C_G_LoginResquest::kKeyFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+C_G_LoginResquest::C_G_LoginResquest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_client_2eproto::InitDefaultsC_G_LoginResquest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:message.C_G_LoginResquest)
+}
+C_G_LoginResquest::C_G_LoginResquest(const C_G_LoginResquest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_packethead()) {
+    packethead_ = new ::message::Ipacket(*from.packethead_);
+  } else {
+    packethead_ = NULL;
+  }
+  key_ = from.key_;
+  // @@protoc_insertion_point(copy_constructor:message.C_G_LoginResquest)
+}
+
+void C_G_LoginResquest::SharedCtor() {
+  ::memset(&packethead_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&key_) -
+      reinterpret_cast<char*>(&packethead_)) + sizeof(key_));
+  _cached_size_ = 0;
+}
+
+C_G_LoginResquest::~C_G_LoginResquest() {
+  // @@protoc_insertion_point(destructor:message.C_G_LoginResquest)
+  SharedDtor();
+}
+
+void C_G_LoginResquest::SharedDtor() {
+  if (this != internal_default_instance()) delete packethead_;
+}
+
+void C_G_LoginResquest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* C_G_LoginResquest::descriptor() {
+  ::protobuf_client_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_client_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const C_G_LoginResquest& C_G_LoginResquest::default_instance() {
+  ::protobuf_client_2eproto::InitDefaultsC_G_LoginResquest();
+  return *internal_default_instance();
+}
+
+C_G_LoginResquest* C_G_LoginResquest::New(::google::protobuf::Arena* arena) const {
+  C_G_LoginResquest* n = new C_G_LoginResquest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void C_G_LoginResquest::Clear() {
+// @@protoc_insertion_point(message_clear_start:message.C_G_LoginResquest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && packethead_ != NULL) {
+    delete packethead_;
+  }
+  packethead_ = NULL;
+  key_ = GOOGLE_LONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+bool C_G_LoginResquest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:message.C_G_LoginResquest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .message.Ipacket PacketHead = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_packethead()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 Key = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &key_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:message.C_G_LoginResquest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:message.C_G_LoginResquest)
+  return false;
+#undef DO_
+}
+
+void C_G_LoginResquest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:message.C_G_LoginResquest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .message.Ipacket PacketHead = 1;
+  if (this->has_packethead()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->packethead_, output);
+  }
+
+  // int64 Key = 2;
+  if (this->key() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->key(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:message.C_G_LoginResquest)
+}
+
+::google::protobuf::uint8* C_G_LoginResquest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:message.C_G_LoginResquest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .message.Ipacket PacketHead = 1;
+  if (this->has_packethead()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->packethead_, deterministic, target);
+  }
+
+  // int64 Key = 2;
+  if (this->key() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->key(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:message.C_G_LoginResquest)
+  return target;
+}
+
+size_t C_G_LoginResquest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:message.C_G_LoginResquest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .message.Ipacket PacketHead = 1;
+  if (this->has_packethead()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->packethead_);
+  }
+
+  // int64 Key = 2;
+  if (this->key() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->key());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void C_G_LoginResquest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:message.C_G_LoginResquest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const C_G_LoginResquest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const C_G_LoginResquest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:message.C_G_LoginResquest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:message.C_G_LoginResquest)
+    MergeFrom(*source);
+  }
+}
+
+void C_G_LoginResquest::MergeFrom(const C_G_LoginResquest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:message.C_G_LoginResquest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_packethead()) {
+    mutable_packethead()->::message::Ipacket::MergeFrom(from.packethead());
+  }
+  if (from.key() != 0) {
+    set_key(from.key());
+  }
+}
+
+void C_G_LoginResquest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:message.C_G_LoginResquest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void C_G_LoginResquest::CopyFrom(const C_G_LoginResquest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:message.C_G_LoginResquest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool C_G_LoginResquest::IsInitialized() const {
+  return true;
+}
+
+void C_G_LoginResquest::Swap(C_G_LoginResquest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void C_G_LoginResquest::InternalSwap(C_G_LoginResquest* other) {
+  using std::swap;
+  swap(packethead_, other->packethead_);
+  swap(key_, other->key_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata C_G_LoginResquest::GetMetadata() const {
+  protobuf_client_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_client_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void G_C_LoginResponse::InitAsDefaultInstance() {
+  ::message::_G_C_LoginResponse_default_instance_._instance.get_mutable()->packethead_ = const_cast< ::message::Ipacket*>(
+      ::message::Ipacket::internal_default_instance());
+}
+void G_C_LoginResponse::clear_packethead() {
+  if (GetArenaNoVirtual() == NULL && packethead_ != NULL) {
+    delete packethead_;
+  }
+  packethead_ = NULL;
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int G_C_LoginResponse::kPacketHeadFieldNumber;
+const int G_C_LoginResponse::kKeyFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+G_C_LoginResponse::G_C_LoginResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_client_2eproto::InitDefaultsG_C_LoginResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:message.G_C_LoginResponse)
+}
+G_C_LoginResponse::G_C_LoginResponse(const G_C_LoginResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_packethead()) {
+    packethead_ = new ::message::Ipacket(*from.packethead_);
+  } else {
+    packethead_ = NULL;
+  }
+  key_ = from.key_;
+  // @@protoc_insertion_point(copy_constructor:message.G_C_LoginResponse)
+}
+
+void G_C_LoginResponse::SharedCtor() {
+  ::memset(&packethead_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&key_) -
+      reinterpret_cast<char*>(&packethead_)) + sizeof(key_));
+  _cached_size_ = 0;
+}
+
+G_C_LoginResponse::~G_C_LoginResponse() {
+  // @@protoc_insertion_point(destructor:message.G_C_LoginResponse)
+  SharedDtor();
+}
+
+void G_C_LoginResponse::SharedDtor() {
+  if (this != internal_default_instance()) delete packethead_;
+}
+
+void G_C_LoginResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* G_C_LoginResponse::descriptor() {
+  ::protobuf_client_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_client_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const G_C_LoginResponse& G_C_LoginResponse::default_instance() {
+  ::protobuf_client_2eproto::InitDefaultsG_C_LoginResponse();
+  return *internal_default_instance();
+}
+
+G_C_LoginResponse* G_C_LoginResponse::New(::google::protobuf::Arena* arena) const {
+  G_C_LoginResponse* n = new G_C_LoginResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void G_C_LoginResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:message.G_C_LoginResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && packethead_ != NULL) {
+    delete packethead_;
+  }
+  packethead_ = NULL;
+  key_ = GOOGLE_LONGLONG(0);
+  _internal_metadata_.Clear();
+}
+
+bool G_C_LoginResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:message.G_C_LoginResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .message.Ipacket PacketHead = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_packethead()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 Key = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &key_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:message.G_C_LoginResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:message.G_C_LoginResponse)
+  return false;
+#undef DO_
+}
+
+void G_C_LoginResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:message.G_C_LoginResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .message.Ipacket PacketHead = 1;
+  if (this->has_packethead()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->packethead_, output);
+  }
+
+  // int64 Key = 2;
+  if (this->key() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->key(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:message.G_C_LoginResponse)
+}
+
+::google::protobuf::uint8* G_C_LoginResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:message.G_C_LoginResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .message.Ipacket PacketHead = 1;
+  if (this->has_packethead()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->packethead_, deterministic, target);
+  }
+
+  // int64 Key = 2;
+  if (this->key() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->key(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:message.G_C_LoginResponse)
+  return target;
+}
+
+size_t G_C_LoginResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:message.G_C_LoginResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .message.Ipacket PacketHead = 1;
+  if (this->has_packethead()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->packethead_);
+  }
+
+  // int64 Key = 2;
+  if (this->key() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->key());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void G_C_LoginResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:message.G_C_LoginResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const G_C_LoginResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const G_C_LoginResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:message.G_C_LoginResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:message.G_C_LoginResponse)
+    MergeFrom(*source);
+  }
+}
+
+void G_C_LoginResponse::MergeFrom(const G_C_LoginResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:message.G_C_LoginResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_packethead()) {
+    mutable_packethead()->::message::Ipacket::MergeFrom(from.packethead());
+  }
+  if (from.key() != 0) {
+    set_key(from.key());
+  }
+}
+
+void G_C_LoginResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:message.G_C_LoginResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void G_C_LoginResponse::CopyFrom(const G_C_LoginResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:message.G_C_LoginResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool G_C_LoginResponse::IsInitialized() const {
+  return true;
+}
+
+void G_C_LoginResponse::Swap(G_C_LoginResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void G_C_LoginResponse::InternalSwap(G_C_LoginResponse* other) {
+  using std::swap;
+  swap(packethead_, other->packethead_);
+  swap(key_, other->key_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata G_C_LoginResponse::GetMetadata() const {
+  protobuf_client_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_client_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
 void C_A_LoginRequest::InitAsDefaultInstance() {
   ::message::_C_A_LoginRequest_default_instance_._instance.get_mutable()->packethead_ = const_cast< ::message::Ipacket*>(
       ::message::Ipacket::internal_default_instance());
@@ -569,8 +1233,9 @@ void C_A_LoginRequest::clear_packethead() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int C_A_LoginRequest::kPacketHeadFieldNumber;
 const int C_A_LoginRequest::kAccountNameFieldNumber;
+const int C_A_LoginRequest::kPasswordFieldNumber;
 const int C_A_LoginRequest::kBuildNoFieldNumber;
-const int C_A_LoginRequest::kSocketIdFieldNumber;
+const int C_A_LoginRequest::kKeyFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 C_A_LoginRequest::C_A_LoginRequest()
@@ -590,6 +1255,10 @@ C_A_LoginRequest::C_A_LoginRequest(const C_A_LoginRequest& from)
   if (from.accountname().size() > 0) {
     accountname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountname_);
   }
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.password().size() > 0) {
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   buildno_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.buildno().size() > 0) {
     buildno_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.buildno_);
@@ -599,16 +1268,17 @@ C_A_LoginRequest::C_A_LoginRequest(const C_A_LoginRequest& from)
   } else {
     packethead_ = NULL;
   }
-  socketid_ = from.socketid_;
+  key_ = from.key_;
   // @@protoc_insertion_point(copy_constructor:message.C_A_LoginRequest)
 }
 
 void C_A_LoginRequest::SharedCtor() {
   accountname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   buildno_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&packethead_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&socketid_) -
-      reinterpret_cast<char*>(&packethead_)) + sizeof(socketid_));
+      reinterpret_cast<char*>(&key_) -
+      reinterpret_cast<char*>(&packethead_)) + sizeof(key_));
   _cached_size_ = 0;
 }
 
@@ -619,6 +1289,7 @@ C_A_LoginRequest::~C_A_LoginRequest() {
 
 void C_A_LoginRequest::SharedDtor() {
   accountname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   buildno_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete packethead_;
 }
@@ -653,12 +1324,13 @@ void C_A_LoginRequest::Clear() {
   (void) cached_has_bits;
 
   accountname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   buildno_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && packethead_ != NULL) {
     delete packethead_;
   }
   packethead_ = NULL;
-  socketid_ = 0;
+  key_ = GOOGLE_LONGLONG(0);
   _internal_metadata_.Clear();
 }
 
@@ -700,10 +1372,26 @@ bool C_A_LoginRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // string BuildNo = 3;
+      // string Password = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->password().data(), static_cast<int>(this->password().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "message.C_A_LoginRequest.Password"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string BuildNo = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_buildno()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -716,14 +1404,14 @@ bool C_A_LoginRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 SocketId = 4;
-      case 4: {
+      // int64 Key = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &socketid_)));
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &key_)));
         } else {
           goto handle_unusual;
         }
@@ -772,19 +1460,29 @@ void C_A_LoginRequest::SerializeWithCachedSizes(
       2, this->accountname(), output);
   }
 
-  // string BuildNo = 3;
+  // string Password = 3;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "message.C_A_LoginRequest.Password");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->password(), output);
+  }
+
+  // string BuildNo = 5;
   if (this->buildno().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->buildno().data(), static_cast<int>(this->buildno().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "message.C_A_LoginRequest.BuildNo");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->buildno(), output);
+      5, this->buildno(), output);
   }
 
-  // int32 SocketId = 4;
-  if (this->socketid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->socketid(), output);
+  // int64 Key = 6;
+  if (this->key() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->key(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -819,7 +1517,18 @@ void C_A_LoginRequest::SerializeWithCachedSizes(
         2, this->accountname(), target);
   }
 
-  // string BuildNo = 3;
+  // string Password = 3;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "message.C_A_LoginRequest.Password");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->password(), target);
+  }
+
+  // string BuildNo = 5;
   if (this->buildno().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->buildno().data(), static_cast<int>(this->buildno().length()),
@@ -827,12 +1536,12 @@ void C_A_LoginRequest::SerializeWithCachedSizes(
       "message.C_A_LoginRequest.BuildNo");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->buildno(), target);
+        5, this->buildno(), target);
   }
 
-  // int32 SocketId = 4;
-  if (this->socketid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->socketid(), target);
+  // int64 Key = 6;
+  if (this->key() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->key(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -859,7 +1568,14 @@ size_t C_A_LoginRequest::ByteSizeLong() const {
         this->accountname());
   }
 
-  // string BuildNo = 3;
+  // string Password = 3;
+  if (this->password().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->password());
+  }
+
+  // string BuildNo = 5;
   if (this->buildno().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -873,11 +1589,11 @@ size_t C_A_LoginRequest::ByteSizeLong() const {
         *this->packethead_);
   }
 
-  // int32 SocketId = 4;
-  if (this->socketid() != 0) {
+  // int64 Key = 6;
+  if (this->key() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->socketid());
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->key());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -913,6 +1629,10 @@ void C_A_LoginRequest::MergeFrom(const C_A_LoginRequest& from) {
 
     accountname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountname_);
   }
+  if (from.password().size() > 0) {
+
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   if (from.buildno().size() > 0) {
 
     buildno_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.buildno_);
@@ -920,8 +1640,8 @@ void C_A_LoginRequest::MergeFrom(const C_A_LoginRequest& from) {
   if (from.has_packethead()) {
     mutable_packethead()->::message::Ipacket::MergeFrom(from.packethead());
   }
-  if (from.socketid() != 0) {
-    set_socketid(from.socketid());
+  if (from.key() != 0) {
+    set_key(from.key());
   }
 }
 
@@ -950,9 +1670,10 @@ void C_A_LoginRequest::Swap(C_A_LoginRequest* other) {
 void C_A_LoginRequest::InternalSwap(C_A_LoginRequest* other) {
   using std::swap;
   accountname_.Swap(&other->accountname_);
+  password_.Swap(&other->password_);
   buildno_.Swap(&other->buildno_);
   swap(packethead_, other->packethead_);
-  swap(socketid_, other->socketid_);
+  swap(key_, other->key_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -978,7 +1699,6 @@ void A_C_LoginResponse::clear_packethead() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int A_C_LoginResponse::kPacketHeadFieldNumber;
 const int A_C_LoginResponse::kErrorFieldNumber;
-const int A_C_LoginResponse::kSocketIdFieldNumber;
 const int A_C_LoginResponse::kAccountNameFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -1004,17 +1724,15 @@ A_C_LoginResponse::A_C_LoginResponse(const A_C_LoginResponse& from)
   } else {
     packethead_ = NULL;
   }
-  ::memcpy(&error_, &from.error_,
-    static_cast<size_t>(reinterpret_cast<char*>(&socketid_) -
-    reinterpret_cast<char*>(&error_)) + sizeof(socketid_));
+  error_ = from.error_;
   // @@protoc_insertion_point(copy_constructor:message.A_C_LoginResponse)
 }
 
 void A_C_LoginResponse::SharedCtor() {
   accountname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&packethead_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&socketid_) -
-      reinterpret_cast<char*>(&packethead_)) + sizeof(socketid_));
+      reinterpret_cast<char*>(&error_) -
+      reinterpret_cast<char*>(&packethead_)) + sizeof(error_));
   _cached_size_ = 0;
 }
 
@@ -1062,9 +1780,7 @@ void A_C_LoginResponse::Clear() {
     delete packethead_;
   }
   packethead_ = NULL;
-  ::memset(&error_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&socketid_) -
-      reinterpret_cast<char*>(&error_)) + sizeof(socketid_));
+  error_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -1098,20 +1814,6 @@ bool A_C_LoginResponse::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &error_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 SocketId = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &socketid_)));
         } else {
           goto handle_unusual;
         }
@@ -1171,11 +1873,6 @@ void A_C_LoginResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->error(), output);
   }
 
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->socketid(), output);
-  }
-
   // string AccountName = 4;
   if (this->accountname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1210,11 +1907,6 @@ void A_C_LoginResponse::SerializeWithCachedSizes(
   // int32 Error = 2;
   if (this->error() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->error(), target);
-  }
-
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->socketid(), target);
   }
 
   // string AccountName = 4;
@@ -1266,13 +1958,6 @@ size_t A_C_LoginResponse::ByteSizeLong() const {
         this->error());
   }
 
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->socketid());
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -1312,9 +1997,6 @@ void A_C_LoginResponse::MergeFrom(const A_C_LoginResponse& from) {
   if (from.error() != 0) {
     set_error(from.error());
   }
-  if (from.socketid() != 0) {
-    set_socketid(from.socketid());
-  }
 }
 
 void A_C_LoginResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1344,7 +2026,6 @@ void A_C_LoginResponse::InternalSwap(A_C_LoginResponse* other) {
   accountname_.Swap(&other->accountname_);
   swap(packethead_, other->packethead_);
   swap(error_, other->error_);
-  swap(socketid_, other->socketid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -1370,7 +2051,7 @@ void C_A_RegisterRequest::clear_packethead() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int C_A_RegisterRequest::kPacketHeadFieldNumber;
 const int C_A_RegisterRequest::kAccountNameFieldNumber;
-const int C_A_RegisterRequest::kSocketIdFieldNumber;
+const int C_A_RegisterRequest::kPasswordFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 C_A_RegisterRequest::C_A_RegisterRequest()
@@ -1390,20 +2071,22 @@ C_A_RegisterRequest::C_A_RegisterRequest(const C_A_RegisterRequest& from)
   if (from.accountname().size() > 0) {
     accountname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountname_);
   }
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.password().size() > 0) {
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   if (from.has_packethead()) {
     packethead_ = new ::message::Ipacket(*from.packethead_);
   } else {
     packethead_ = NULL;
   }
-  socketid_ = from.socketid_;
   // @@protoc_insertion_point(copy_constructor:message.C_A_RegisterRequest)
 }
 
 void C_A_RegisterRequest::SharedCtor() {
   accountname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&packethead_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&socketid_) -
-      reinterpret_cast<char*>(&packethead_)) + sizeof(socketid_));
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  packethead_ = NULL;
   _cached_size_ = 0;
 }
 
@@ -1414,6 +2097,7 @@ C_A_RegisterRequest::~C_A_RegisterRequest() {
 
 void C_A_RegisterRequest::SharedDtor() {
   accountname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete packethead_;
 }
 
@@ -1447,11 +2131,11 @@ void C_A_RegisterRequest::Clear() {
   (void) cached_has_bits;
 
   accountname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && packethead_ != NULL) {
     delete packethead_;
   }
   packethead_ = NULL;
-  socketid_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -1493,14 +2177,16 @@ bool C_A_RegisterRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 SocketId = 3;
+      // string Password = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &socketid_)));
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->password().data(), static_cast<int>(this->password().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "message.C_A_RegisterRequest.Password"));
         } else {
           goto handle_unusual;
         }
@@ -1549,9 +2235,14 @@ void C_A_RegisterRequest::SerializeWithCachedSizes(
       2, this->accountname(), output);
   }
 
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->socketid(), output);
+  // string Password = 3;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "message.C_A_RegisterRequest.Password");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->password(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1586,9 +2277,15 @@ void C_A_RegisterRequest::SerializeWithCachedSizes(
         2, this->accountname(), target);
   }
 
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->socketid(), target);
+  // string Password = 3;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "message.C_A_RegisterRequest.Password");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->password(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1615,18 +2312,18 @@ size_t C_A_RegisterRequest::ByteSizeLong() const {
         this->accountname());
   }
 
+  // string Password = 3;
+  if (this->password().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->password());
+  }
+
   // .message.Ipacket PacketHead = 1;
   if (this->has_packethead()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *this->packethead_);
-  }
-
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->socketid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1662,11 +2359,12 @@ void C_A_RegisterRequest::MergeFrom(const C_A_RegisterRequest& from) {
 
     accountname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountname_);
   }
+  if (from.password().size() > 0) {
+
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   if (from.has_packethead()) {
     mutable_packethead()->::message::Ipacket::MergeFrom(from.packethead());
-  }
-  if (from.socketid() != 0) {
-    set_socketid(from.socketid());
   }
 }
 
@@ -1695,8 +2393,8 @@ void C_A_RegisterRequest::Swap(C_A_RegisterRequest* other) {
 void C_A_RegisterRequest::InternalSwap(C_A_RegisterRequest* other) {
   using std::swap;
   accountname_.Swap(&other->accountname_);
+  password_.Swap(&other->password_);
   swap(packethead_, other->packethead_);
-  swap(socketid_, other->socketid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -1722,7 +2420,6 @@ void A_C_RegisterResponse::clear_packethead() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int A_C_RegisterResponse::kPacketHeadFieldNumber;
 const int A_C_RegisterResponse::kErrorFieldNumber;
-const int A_C_RegisterResponse::kSocketIdFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 A_C_RegisterResponse::A_C_RegisterResponse()
@@ -1743,16 +2440,14 @@ A_C_RegisterResponse::A_C_RegisterResponse(const A_C_RegisterResponse& from)
   } else {
     packethead_ = NULL;
   }
-  ::memcpy(&error_, &from.error_,
-    static_cast<size_t>(reinterpret_cast<char*>(&socketid_) -
-    reinterpret_cast<char*>(&error_)) + sizeof(socketid_));
+  error_ = from.error_;
   // @@protoc_insertion_point(copy_constructor:message.A_C_RegisterResponse)
 }
 
 void A_C_RegisterResponse::SharedCtor() {
   ::memset(&packethead_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&socketid_) -
-      reinterpret_cast<char*>(&packethead_)) + sizeof(socketid_));
+      reinterpret_cast<char*>(&error_) -
+      reinterpret_cast<char*>(&packethead_)) + sizeof(error_));
   _cached_size_ = 0;
 }
 
@@ -1798,9 +2493,7 @@ void A_C_RegisterResponse::Clear() {
     delete packethead_;
   }
   packethead_ = NULL;
-  ::memset(&error_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&socketid_) -
-      reinterpret_cast<char*>(&error_)) + sizeof(socketid_));
+  error_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -1834,20 +2527,6 @@ bool A_C_RegisterResponse::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &error_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 SocketId = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &socketid_)));
         } else {
           goto handle_unusual;
         }
@@ -1891,11 +2570,6 @@ void A_C_RegisterResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->error(), output);
   }
 
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->socketid(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1920,11 +2594,6 @@ void A_C_RegisterResponse::SerializeWithCachedSizes(
   // int32 Error = 2;
   if (this->error() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->error(), target);
-  }
-
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->socketid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1956,13 +2625,6 @@ size_t A_C_RegisterResponse::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->error());
-  }
-
-  // int32 SocketId = 3;
-  if (this->socketid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->socketid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2000,9 +2662,6 @@ void A_C_RegisterResponse::MergeFrom(const A_C_RegisterResponse& from) {
   if (from.error() != 0) {
     set_error(from.error());
   }
-  if (from.socketid() != 0) {
-    set_socketid(from.socketid());
-  }
 }
 
 void A_C_RegisterResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2031,7 +2690,6 @@ void A_C_RegisterResponse::InternalSwap(A_C_RegisterResponse* other) {
   using std::swap;
   swap(packethead_, other->packethead_);
   swap(error_, other->error_);
-  swap(socketid_, other->socketid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
