@@ -4,6 +4,7 @@ var ws = require('ws')
 var messagepb= require("./pb/message");
 var clientpb= require("./pb/client");
 var Packet = require("./Packet");
+var dh = require('./dh');
 
 var SERVER_VERSION = 102008000;
 var MAX_PACKET_SIZE	= 32*1024;
@@ -13,7 +14,7 @@ var Socket = {};
 	console.log('Network initSocket...');
 	//this.host = "ws://192.168.1.122:21001";;
 	//this.testhost = "ws://echo.websocket.org"
-	Socket = new ws("ws://localhost:31700/ws", {
+	Socket = new ws("ws://192.168.215.107:31700/ws", {
 		origin: 'http://localhost/'
 	});
 
@@ -23,7 +24,7 @@ var Socket = {};
 		{
 			Socket.isInit = true;
 		}
-		LoginAccount();
+		LoginGate();
 	};
 
 	Socket.onmessage = function (evt) {
@@ -64,15 +65,13 @@ function Close() {
 	}
 }
 
-function LoginAccount(){
-	var AccountName = "test130003";
-	var packet1 =  clientpb.message.C_A_LoginRequest.create();
-	packet1.PacketHead = Packet.BuildPacketHead(0);
-	packet1.AccountName = AccountName;
-	packet1.BuildNo = "1,5,1,1";
-	packet1.SocketId = 0;
-	Packet.SendPacket("C_A_LoginRequest", packet1)
-};
+function LoginGate() {
+    var packet1 =  clientpb.message.C_G_LoginResquest.create();
+    packet1.PacketHead = Packet.BuildPacketHead(0);
+    packet1.Key = dh.key.PubKey();
+    console.log(dh.key.PubKey())
+    Packet.SendPacket("C_G_LoginResquest", packet1);
+}
 
 module.exports.Send=Send;
 module.exports.Close=Close;

@@ -260,6 +260,12 @@ RegisterPacketCreator("W_C_CreatePlayerResponse", function(){
 RegisterPacketCreator("W_C_ChatMessage", function(){
     return clientpb.message.W_C_ChatMessage;
 })
+RegisterPacketCreator("C_G_LoginResquest", function () {
+    return clientpb.message.C_G_LoginResquest;
+})
+RegisterPacketCreator("G_C_LoginResponse", function () {
+    return clientpb.message.G_C_LoginResponse;
+})
 RegisterPacketCreator("A_C_LoginResponse", function(){
     return clientpb.message.A_C_LoginResponse;
 })

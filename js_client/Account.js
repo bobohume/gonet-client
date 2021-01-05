@@ -3,7 +3,9 @@
 var BitStream = require("./BitStream");
 var Packet = require("./Packet");
 var messagepb= require("./pb/message");
-var clientpb= require("./pb/client");
+var clientpb = require("./pb/client");
+var crypto = require('crypto');
+var dh = require('./dh');
 
 var BUILD_NO = "1,5,1,1";
 
@@ -41,14 +43,32 @@ Packet.RegisterPacket("W_C_CreatePlayerResponse", function(packet){
 	}
 });
 
+//dh验证
+Packet.RegisterPacket("G_C_LoginResponse", function (packet) {
+    console.log(packet);
+    dh.key.ExchangePubk(packet.Key);
+    console.log(dh.key.ShareKey())
+    LoginAccount()
+});
+
+function ToSlat(accountName, pwd) {
+    return accountName + "__" + pwd
+}
+
+function md5(content) {
+    return crypto.createHash('md5').update(content).digest("hex")
+}
+
 //账号登录反馈
 Packet.RegisterPacket("A_C_LoginResponse", function(packet){
 	console.log(packet);
-	if (packet.Error == 2){
-		var packet1 = clientpb.message.C_A_RegisterRequest.create();
+	if (packet.Error == 2) {
+	    var AccountName = "test130003";
+	    var packet1 = clientpb.message.C_A_RegisterRequest.create();
 		packet1.PacketHead = Packet.BuildPacketHead(0);
-		packet1.AccountName = "test130003";
-		packet1.SocketId = 0;
+		packet1.AccountName = AccountName;
+		packet1.BuildNo = BUILD_NO;
+		packet1.Password = md5(ToSlat(AccountName, "123456"));
 		Packet.SendPacket("C_A_RegisterRequest", packet1);
 	}
 });
@@ -73,7 +93,8 @@ function LoginAccount(){
 	packet1.PacketHead = Packet.BuildPacketHead(0);
 	packet1.AccountName = AccountName;
 	packet1.BuildNo = BUILD_NO;
-	packet1.SocketId = 0;
+	packet1.Password = md5(ToSlat(AccountName, "123456"));
+	packet1.Key = dh.key.ShareKey();
 	Packet.SendPacket("C_A_LoginRequest", packet1);
 };
 

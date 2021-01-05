@@ -25,7 +25,7 @@ BitStream.prototype.bindPacketStream = function(buffer, writeSize){
 
     this.setBuffer(buffer, writeSize);
     this.setPosition(0);
-    return true
+    return true;
 }
 
 BitStream.prototype.setBuffer=function(bufPtr,size,maxSize=-1){
