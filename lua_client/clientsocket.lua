@@ -43,4 +43,4 @@ function ClientSocket:Receive()
     end
 end
 
-CLIENTSOCKET = ClientSocket:new(nil, "127.0.0.1", 31700)
+CLIENTSOCKET = ClientSocket:new(nil, "192.168.215.107", 31700)

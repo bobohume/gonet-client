@@ -1,31 +1,32 @@
-'use strict';
-
 /**
  * Provides methods for augmenting the parse results based on their content.
  * @module jsdoc/augment
  */
 
-var doop = require('jsdoc/util/doop');
-var name = require('jsdoc/name');
+const doop = require('jsdoc/util/doop');
+const jsdoc = {
+    doclet: require('jsdoc/doclet')
+};
+const name = require('jsdoc/name');
 
-var hasOwnProp = Object.prototype.hasOwnProperty;
+const hasOwnProp = Object.prototype.hasOwnProperty;
 
 function mapDependencies(index, propertyName) {
-    var dependencies = {};
-    var doc;
-    var doclets;
-    var kinds = ['class', 'external', 'interface', 'mixin'];
-    var len = 0;
+    const dependencies = {};
+    let doc;
+    let doclets;
+    const kinds = ['class', 'external', 'interface', 'mixin'];
+    let len = 0;
 
-    Object.keys(index).forEach(function(indexName) {
+    Object.keys(index).forEach(indexName => {
         doclets = index[indexName];
-        for (var i = 0, ii = doclets.length; i < ii; i++) {
+        for (let i = 0, ii = doclets.length; i < ii; i++) {
             doc = doclets[i];
-            if (kinds.indexOf(doc.kind) !== -1) {
+            if (kinds.includes(doc.kind)) {
                 dependencies[indexName] = {};
                 if (hasOwnProp.call(doc, propertyName)) {
                     len = doc[propertyName].length;
-                    for (var j = 0; j < len; j++) {
+                    for (let j = 0; j < len; j++) {
                         dependencies[indexName][doc[propertyName][j]] = true;
                     }
                 }
@@ -36,79 +37,81 @@ function mapDependencies(index, propertyName) {
     return dependencies;
 }
 
-function Sorter(dependencies) {
-    this.dependencies = dependencies;
-    this.visited = {};
-    this.sorted = [];
+class Sorter {
+    constructor(dependencies) {
+        this.dependencies = dependencies;
+        this.visited = {};
+        this.sorted = [];
+    }
+
+    visit(key) {
+        if (!(key in this.visited)) {
+            this.visited[key] = true;
+
+            if (this.dependencies[key]) {
+                Object.keys(this.dependencies[key]).forEach(path => {
+                    this.visit(path);
+                });
+            }
+
+            this.sorted.push(key);
+        }
+    }
+
+    sort() {
+        Object.keys(this.dependencies).forEach(key => {
+            this.visit(key);
+        });
+
+        return this.sorted;
+    }
 }
 
-Sorter.prototype.visit = function(key) {
-    var self = this;
-
-    if (!(key in this.visited)) {
-        this.visited[key] = true;
-
-        if (this.dependencies[key]) {
-            Object.keys(this.dependencies[key]).forEach(function(path) {
-                self.visit(path);
-            });
-        }
-
-        this.sorted.push(key);
-    }
-};
-
-Sorter.prototype.sort = function() {
-    var self = this;
-
-    Object.keys(this.dependencies).forEach(function(key) {
-        self.visit(key);
-    });
-
-    return this.sorted;
-};
-
 function sort(dependencies) {
-    var sorter = new Sorter(dependencies);
+    const sorter = new Sorter(dependencies);
 
     return sorter.sort();
 }
 
-function getMembers(longname, docs, scopes) {
-    var candidate;
-    var members = [];
+function getMembers(longname, {index}, scopes) {
+    const memberof = index.memberof[longname] || [];
+    const members = [];
 
-    for (var i = 0, l = docs.length; i < l; i++) {
-        candidate = docs[i];
-
-        if (candidate.memberof === longname && scopes.indexOf(candidate.scope) !== -1) {
+    memberof.forEach(candidate => {
+        if (scopes.includes(candidate.scope)) {
             members.push(candidate);
         }
-    }
+    });
 
     return members;
 }
 
+function getDocumentedLongname(longname, {index}) {
+    const doclets = index.documented[longname] || [];
+
+    return doclets[doclets.length - 1];
+}
+
 function addDocletProperty(doclets, propName, value) {
-    for (var i = 0, l = doclets.length; i < l; i++) {
+    for (let i = 0, l = doclets.length; i < l; i++) {
         doclets[i][propName] = value;
     }
 }
 
-function reparentDoclet(parent, child) {
-    var parts = name.shorten(child.longname);
+function reparentDoclet({longname}, child) {
+    const parts = name.shorten(child.longname);
 
-    parts.memberof = parent.longname;
-    child.memberof = parent.longname;
+    parts.memberof = longname;
+    child.memberof = longname;
     child.longname = name.combine(parts);
 }
 
-function parentIsClass(parent) {
-    return parent.kind === 'class';
+function parentIsClass({kind}) {
+    return kind === 'class';
 }
 
 function staticToInstance(doclet) {
-    var parts = name.shorten(doclet.longname);
+    const parts = name.shorten(doclet.longname);
 
     parts.scope = name.SCOPE.PUNC.INSTANCE;
     doclet.longname = name.combine(parts);
@@ -162,11 +165,30 @@ function updateDocumentedDoclets(doclet, documented) {
     documented[doclet.longname].push(doclet);
 }
 
-function explicitlyInherits(doclets) {
-    var doclet;
-    var inherits = false;
+/**
+ * Update the index of doclets with a `memberof` value.
+ *
+ * @private
+ * @param {module:jsdoc/doclet.Doclet} doclet - The doclet to be added to the index.
+ * @param {Object.<string, Array.<module:jsdoc/doclet.Doclet>>} memberof - The index of doclets
+ * with a `memberof` value.
+ * @return {void}
+ */
+function updateMemberofDoclets(doclet, memberof) {
+    if (doclet.memberof) {
+        if ( !hasOwnProp.call(memberof, doclet.memberof) ) {
+            memberof[doclet.memberof] = [];
+        }
 
-    for (var i = 0, l = doclets.length; i < l; i++) {
+        memberof[doclet.memberof].push(doclet);
+    }
+}
+
+function explicitlyInherits(doclets) {
+    let doclet;
+    let inherits = false;
+
+    for (let i = 0, l = doclets.length; i < l; i++) {
         doclet = doclets[i];
         if (typeof doclet.inheritdoc !== 'undefined' || typeof doclet.override !== 'undefined') {
             inherits = true;
@@ -177,20 +199,31 @@ function explicitlyInherits(doclets) {
     return inherits;
 }
 
+function changeMemberof(longname, newMemberof) {
+    const atoms = name.shorten(longname);
+
+    atoms.memberof = newMemberof;
+
+    return name.combine(atoms);
+}
+
 // TODO: try to reduce overlap with similar methods
-function getInheritedAdditions(doclets, docs, documented) {
-    var additionIndexes;
-    var additions = [];
-    var doc;
-    var parents;
-    var members;
-    var member;
-    var parts;
+function getInheritedAdditions(doclets, docs, {documented, memberof}) {
+    let additionIndexes;
+    const additions = [];
+    let childDoclet;
+    let childLongname;
+    let doc;
+    let parentDoclet;
+    let parentMembers;
+    let parents;
+    let member;
+    let parts;
 
     // doclets will be undefined if the inherited symbol isn't documented
     doclets = doclets || [];
 
-    for (var i = 0, ii = doclets.length; i < ii; i++) {
+    for (let i = 0, ii = doclets.length; i < ii; i++) {
         doc = doclets[i];
         parents = doc.augments;
 
@@ -198,35 +231,43 @@ function getInheritedAdditions(doclets, docs, documented) {
             // reset the lookup table of added doclet indexes by longname
             additionIndexes = {};
 
-            for (var j = 0, jj = parents.length; j < jj; j++) {
-                members = getMembers(parents[j], docs, ['instance']);
+            for (let j = 0, jj = parents.length; j < jj; j++) {
+                parentMembers = getMembers(parents[j], docs, ['instance']);
 
-                for (var k = 0, kk = members.length; k < kk; k++) {
+                for (let k = 0, kk = parentMembers.length; k < kk; k++) {
+                    parentDoclet = parentMembers[k];
+
                     // We only care about symbols that are documented.
-                    if (members[k].undocumented) {
+                    if (parentDoclet.undocumented) {
                         continue;
                     }
 
-                    member = doop(members[k]);
+                    childLongname = changeMemberof(parentDoclet.longname, doc.longname);
+                    childDoclet = getDocumentedLongname(childLongname, docs) || {};
+
+                    // We don't want to fold in properties from the child doclet if it had an
+                    // `@inheritdoc` tag.
+                    if (hasOwnProp.call(childDoclet, 'inheritdoc')) {
+                        childDoclet = {};
+                    }
+
+                    member = jsdoc.doclet.combine(childDoclet, parentDoclet);
 
                     if (!member.inherited) {
                         member.inherits = member.longname;
                     }
                     member.inherited = true;
 
-                    // TODO: this will fail on longnames like: MyClass#"quoted#Longname"
-                    // and nested instance members like: MyClass#MyOtherClass#myMethod;
-                    // switch to updateLongname()!
                     member.memberof = doc.longname;
-                    parts = member.longname.split('#');
-                    parts[0] = doc.longname;
-                    member.longname = parts.join('#');
+                    parts = name.shorten(member.longname);
+                    parts.memberof = doc.longname;
+                    member.longname = name.combine(parts);
 
                     // Indicate what the descendant is overriding. (We only care about the closest
                     // ancestor. For classes A > B > C, if B#a overrides A#a, and C#a inherits B#a,
                     // we don't want the doclet for C#a to say that it overrides A#a.)
                     if ( hasOwnProp.call(docs.index.longname, member.longname) ) {
-                        member.overrides = members[k].longname;
+                        member.overrides = parentDoclet.longname;
                     }
                     else {
                         delete member.overrides;
@@ -237,6 +278,7 @@ function getInheritedAdditions(doclets, docs, documented) {
                     if ( !hasOwnProp.call(documented, member.longname) ) {
                         updateAddedDoclets(member, additions, additionIndexes);
                         updateDocumentedDoclets(member, documented);
+                        updateMemberofDoclets(member, memberof);
                     }
                     // If the descendant used an @inheritdoc or @override tag, add the ancestor's
                     // docs, and ignore the existing doclets.
@@ -247,6 +289,7 @@ function getInheritedAdditions(doclets, docs, documented) {
 
                         updateAddedDoclets(member, additions, additionIndexes);
                         updateDocumentedDoclets(member, documented);
+                        updateMemberofDoclets(member, memberof);
 
                         // Remove property that's no longer accurate.
                         if (member.virtual) {
@@ -264,7 +307,7 @@ function getInheritedAdditions(doclets, docs, documented) {
                     // update the doclets to indicate what the descendant is overriding.
                     else {
                         addDocletProperty(documented[member.longname], 'overrides',
-                            members[k].longname);
+                            parentDoclet.longname);
                     }
                 }
             }
@@ -275,9 +318,9 @@ function getInheritedAdditions(doclets, docs, documented) {
 }
 
 function updateMixes(mixedDoclet, mixedLongname) {
-    var idx;
-    var mixedName;
-    var names;
+    let idx;
+    let mixedName;
+    let names;
 
     // take the fast path if there's no array of mixed-in longnames
     if (!mixedDoclet.mixes) {
@@ -288,9 +331,7 @@ function updateMixes(mixedDoclet, mixedLongname) {
         mixedName = name.shorten(mixedLongname).name;
         // find the short name of each previously mixed-in symbol
         // TODO: why do we run a map if we always shorten the same value? this looks like a bug...
-        names = mixedDoclet.mixes.map(function() {
-            return name.shorten(mixedDoclet.longname).name;
-        });
+        names = mixedDoclet.mixes.map(() => name.shorten(mixedDoclet.longname).name);
 
         // if we're mixing `myMethod` into `MixinC` from `MixinB`, and `MixinB` had the method mixed
         // in from `MixinA`, don't show `MixinA.myMethod` in the `mixes` list
@@ -304,18 +345,19 @@ function updateMixes(mixedDoclet, mixedLongname) {
 }
 
 // TODO: try to reduce overlap with similar methods
-function getMixedInAdditions(mixinDoclets, allDoclets, commentedDoclets) {
-    var additionIndexes;
-    var additions = [];
-    var doclet;
-    var mixedDoclet;
-    var mixedDoclets;
-    var mixes;
+function getMixedInAdditions(mixinDoclets, allDoclets, {documented, memberof}) {
+    let additionIndexes;
+    const additions = [];
+    const commentedDoclets = documented;
+    let doclet;
+    let mixedDoclet;
+    let mixedDoclets;
+    let mixes;
 
     // mixinDoclets will be undefined if the mixed-in symbol isn't documented
     mixinDoclets = mixinDoclets || [];
 
-    for (var i = 0, ii = mixinDoclets.length; i < ii; i++) {
+    for (let i = 0, ii = mixinDoclets.length; i < ii; i++) {
         doclet = mixinDoclets[i];
         mixes = doclet.mixes;
 
@@ -323,10 +365,10 @@ function getMixedInAdditions(mixinDoclets, allDoclets, commentedDoclets) {
             // reset the lookup table of added doclet indexes by longname
             additionIndexes = {};
 
-            for (var j = 0, jj = mixes.length; j < jj; j++) {
+            for (let j = 0, jj = mixes.length; j < jj; j++) {
                 mixedDoclets = getMembers(mixes[j], allDoclets, ['static']);
 
-                for (var k = 0, kk = mixedDoclets.length; k < kk; k++) {
+                for (let k = 0, kk = mixedDoclets.length; k < kk; k++) {
                     // We only care about symbols that are documented.
                     if (mixedDoclets[k].undocumented) {
                         continue;
@@ -346,6 +388,7 @@ function getMixedInAdditions(mixinDoclets, allDoclets, commentedDoclets) {
 
                     updateAddedDoclets(mixedDoclet, additions, additionIndexes);
                     updateDocumentedDoclets(mixedDoclet, commentedDoclets);
+                    updateMemberofDoclets(mixedDoclet, memberof);
                 }
             }
         }
@@ -359,31 +402,35 @@ function updateImplements(implDoclets, implementedLongname) {
         implDoclets = [implDoclets];
     }
 
-    implDoclets.forEach(function(implDoclet) {
+    implDoclets.forEach(implDoclet => {
         if ( !hasOwnProp.call(implDoclet, 'implements') ) {
             implDoclet.implements = [];
         }
 
-        if (implDoclet.implements.indexOf(implementedLongname) === -1) {
+        if (!implDoclet.implements.includes(implementedLongname)) {
             implDoclet.implements.push(implementedLongname);
         }
     });
 }
 
 // TODO: try to reduce overlap with similar methods
-function getImplementedAdditions(implDoclets, allDoclets, commentedDoclets) {
-    var additionIndexes;
-    var additions = [];
-    var doclet;
-    var implementations;
-    var implExists;
-    var implementationDoclet;
-    var interfaceDoclets;
+function getImplementedAdditions(implDoclets, allDoclets, {documented, memberof}) {
+    let additionIndexes;
+    const additions = [];
+    let childDoclet;
+    let childLongname;
+    const commentedDoclets = documented;
+    let doclet;
+    let implementations;
+    let implExists;
+    let implementationDoclet;
+    let interfaceDoclets;
+    let parentDoclet;
 
     // interfaceDoclets will be undefined if the implemented symbol isn't documented
     implDoclets = implDoclets || [];
 
-    for (var i = 0, ii = implDoclets.length; i < ii; i++) {
+    for (let i = 0, ii = implDoclets.length; i < ii; i++) {
         doclet = implDoclets[i];
         implementations = doclet.implements;
 
@@ -391,19 +438,30 @@ function getImplementedAdditions(implDoclets, allDoclets, commentedDoclets) {
             // reset the lookup table of added doclet indexes by longname
             additionIndexes = {};
 
-            for (var j = 0, jj = implementations.length; j < jj; j++) {
+            for (let j = 0, jj = implementations.length; j < jj; j++) {
                 interfaceDoclets = getMembers(implementations[j], allDoclets, ['instance']);
 
-                for (var k = 0, kk = interfaceDoclets.length; k < kk; k++) {
+                for (let k = 0, kk = interfaceDoclets.length; k < kk; k++) {
+                    parentDoclet = interfaceDoclets[k];
+
                     // We only care about symbols that are documented.
-                    if (interfaceDoclets[k].undocumented) {
+                    if (parentDoclet.undocumented) {
                         continue;
                     }
 
-                    implementationDoclet = doop(interfaceDoclets[k]);
+                    childLongname = changeMemberof(parentDoclet.longname, doclet.longname);
+                    childDoclet = getDocumentedLongname(childLongname, allDoclets) || {};
+
+                    // We don't want to fold in properties from the child doclet if it had an
+                    // `@inheritdoc` tag.
+                    if (hasOwnProp.call(childDoclet, 'inheritdoc')) {
+                        childDoclet = {};
+                    }
+
+                    implementationDoclet = jsdoc.doclet.combine(childDoclet, parentDoclet);
 
                     reparentDoclet(doclet, implementationDoclet);
-                    updateImplements(implementationDoclet, interfaceDoclets[k].longname);
+                    updateImplements(implementationDoclet, parentDoclet.longname);
 
                     // If there's no implementation, move along.
                     implExists = hasOwnProp.call(allDoclets.index.longname,
@@ -416,6 +474,7 @@ function getImplementedAdditions(implDoclets, allDoclets, commentedDoclets) {
                     if ( !hasOwnProp.call(commentedDoclets, implementationDoclet.longname) ) {
                         updateAddedDoclets(implementationDoclet, additions, additionIndexes);
                         updateDocumentedDoclets(implementationDoclet, commentedDoclets);
+                        updateMemberofDoclets(implementationDoclet, memberof);
                     }
                     // If the implementation used an @inheritdoc or @override tag, add the
                     // interface's docs, and ignore the existing doclets.
@@ -428,6 +487,7 @@ function getImplementedAdditions(implDoclets, allDoclets, commentedDoclets) {
 
                         updateAddedDoclets(implementationDoclet, additions, additionIndexes);
                         updateDocumentedDoclets(implementationDoclet, commentedDoclets);
+                        updateMemberofDoclets(implementationDoclet, memberof);
 
                         // Remove property that's no longer accurate.
                         if (implementationDoclet.virtual) {
@@ -445,7 +505,7 @@ function getImplementedAdditions(implDoclets, allDoclets, commentedDoclets) {
                     // indicate what the implementation is implementing.
                     else {
                         updateImplements(commentedDoclets[implementationDoclet.longname],
-                            interfaceDoclets[k].longname);
+                            parentDoclet.longname);
                     }
                 }
             }
@@ -456,14 +516,14 @@ function getImplementedAdditions(implDoclets, allDoclets, commentedDoclets) {
 }
 
 function augment(doclets, propertyName, docletFinder) {
-    var index = doclets.index.longname;
-    var dependencies = sort( mapDependencies(index, propertyName) );
+    const index = doclets.index.longname;
+    const dependencies = sort( mapDependencies(index, propertyName) );
 
-    dependencies.forEach(function(depName) {
-        var additions = docletFinder(index[depName], doclets, doclets.index.documented);
+    dependencies.forEach(depName => {
+        const additions = docletFinder(index[depName], doclets, doclets.index);
 
-        additions.forEach(function(addition) {
-            var longname = addition.longname;
+        additions.forEach(addition => {
+            const longname = addition.longname;
 
             if ( !hasOwnProp.call(index, longname) ) {
                 index[longname] = [];
@@ -481,10 +541,10 @@ function augment(doclets, propertyName, docletFinder) {
  * calling this method creates a new doclet for `ClassB#myMethod`.
  *
  * @param {!Array.<module:jsdoc/doclet.Doclet>} doclets - The doclets generated by JSDoc.
- * @param {!Object} doclets.index - The doclet index added by {@link module:jsdoc/borrow.indexAll}.
+ * @param {!Object} doclets.index - The doclet index.
  * @return {void}
  */
-exports.addInherited = function(doclets) {
+exports.addInherited = doclets => {
     augment(doclets, 'augments', getInheritedAdditions);
 };
 
@@ -500,10 +560,10 @@ exports.addInherited = function(doclets) {
  * creates a new doclet for the instance method `ClassA#myMethod`.
  *
  * @param {!Array.<module:jsdoc/doclet.Doclet>} doclets - The doclets generated by JSDoc.
- * @param {!Object} doclets.index - The doclet index added by {@link module:jsdoc/borrow.indexAll}.
+ * @param {!Object} doclets.index - The doclet index.
  * @return {void}
  */
-exports.addMixedIn = function(doclets) {
+exports.addMixedIn = doclets => {
     augment(doclets, 'mixes', getMixedInAdditions);
 };
 
@@ -521,10 +581,10 @@ exports.addMixedIn = function(doclets) {
  * generate a new doclet that reflects the interface's documentation for `InterfaceA#myMethod`.
  *
  * @param {!Array.<module:jsdoc/doclet.Doclet>} docs - The doclets generated by JSDoc.
- * @param {!Object} doclets.index - The doclet index added by {@link module:jsdoc/borrow.indexAll}.
+ * @param {!Object} doclets.index - The doclet index.
  * @return {void}
  */
-exports.addImplemented = function(doclets) {
+exports.addImplemented = doclets => {
     augment(doclets, 'implements', getImplementedAdditions);
 };
 
@@ -539,7 +599,7 @@ exports.addImplemented = function(doclets) {
  *
  * @return {void}
  */
-exports.augmentAll = function(doclets) {
+exports.augmentAll = doclets => {
     exports.addMixedIn(doclets);
     exports.addImplemented(doclets);
     exports.addInherited(doclets);

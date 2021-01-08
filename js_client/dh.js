@@ -36,6 +36,7 @@ Dh.prototype.PubKey =function(){
 
 Dh.prototype.generatePrik = function(){
     this.x = BigInt(Math.floor(Math.random()*10000000))%this.q;
+    this.x = this.x + 1n;
 }
 
 Dh.prototype.generatePubk = function(){

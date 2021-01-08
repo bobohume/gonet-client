@@ -1,10 +1,8 @@
 /**
  * @module jsdoc/tag/type
  */
-'use strict';
-
-var catharsis = require('catharsis');
-var jsdoc = {
+const catharsis = require('catharsis');
+const jsdoc = {
     name: require('jsdoc/name'),
     tag: {
         inline: require('jsdoc/tag/inline')
@@ -13,7 +11,6 @@ var jsdoc = {
         cast: require('jsdoc/util/cast')
     }
 };
-var util = require('util');
 
 /**
  * Information about a type expression extracted from tag text.
@@ -38,12 +35,12 @@ function unescapeBraces(text) {
  * @return {module:jsdoc/tag/type.TypeExpressionInfo} The type expression and updated tag text.
  */
 function extractTypeExpression(string) {
-    var completeExpression;
-    var count = 0;
-    var position = 0;
-    var expression = '';
-    var startIndex = string.search(/\{[^@]/);
-    var textStartIndex;
+    let completeExpression;
+    let count = 0;
+    let position = 0;
+    let expression = '';
+    const startIndex = string.search(/\{[^@]/);
+    let textStartIndex;
 
     if (startIndex !== -1) {
         // advance to the first character in the type expression
@@ -86,12 +83,12 @@ function extractTypeExpression(string) {
 
 /** @private */
 function getTagInfo(tagValue, canHaveName, canHaveType) {
-    var name = '';
-    var typeExpression = '';
-    var text = tagValue;
-    var expressionAndText;
-    var nameAndDescription;
-    var typeOverride;
+    let name = '';
+    let typeExpression = '';
+    let text = tagValue;
+    let expressionAndText;
+    let nameAndDescription;
+    let typeOverride;
 
     if (canHaveType) {
         expressionAndText = extractTypeExpression(text);
@@ -172,12 +169,12 @@ function parseName(tagInfo) {
 
 /** @private */
 function getTypeStrings(parsedType, isOutermostType) {
-    var applications;
-    var typeString;
+    let applications;
+    let typeString;
 
-    var types = [];
+    let types = [];
 
-    var TYPES = catharsis.Types;
+    const TYPES = catharsis.Types;
 
     switch (parsedType.type) {
         case TYPES.AllLiteral:
@@ -198,11 +195,9 @@ function getTypeStrings(parsedType, isOutermostType) {
         case TYPES.TypeApplication:
             // if this is the outermost type, we strip the modifiers; otherwise, we keep them
             if (isOutermostType) {
-                applications = parsedType.applications.map(function(application) {
-                    return catharsis.stringify(application);
-                }).join(', ');
-                typeString = util.format( '%s.<%s>', getTypeStrings(parsedType.expression),
-                    applications );
+                applications = parsedType.applications.map(application =>
+                    catharsis.stringify(application)).join(', ');
+                typeString = `${getTypeStrings(parsedType.expression)[0]}.<${applications}>`;
 
                 types.push(typeString);
             }
@@ -211,7 +206,7 @@ function getTypeStrings(parsedType, isOutermostType) {
             }
             break;
         case TYPES.TypeUnion:
-            parsedType.elements.forEach(function(element) {
+            parsedType.elements.forEach(element => {
                 types = types.concat( getTypeStrings(element) );
             });
             break;
@@ -223,8 +218,7 @@ function getTypeStrings(parsedType, isOutermostType) {
             break;
         default:
             // this shouldn't happen
-            throw new Error( util.format('unrecognized type %s in parsed type: %j', parsedType.type,
-                parsedType) );
+            throw new Error(`unrecognized type ${parsedType.type} in parsed type: ${parsedType}`);
     }
 
     return types;
@@ -239,7 +233,7 @@ function getTypeStrings(parsedType, isOutermostType) {
  * @return {module:jsdoc/tag/type.TagInfo} Updated information from the tag.
  */
 function parseTypeExpression(tagInfo) {
-    var parsedType;
+    let parsedType;
 
     // don't try to parse empty type expressions
     if (!tagInfo.typeExpression) {
@@ -251,15 +245,14 @@ function parseTypeExpression(tagInfo) {
     }
     catch (e) {
         // always re-throw so the caller has a chance to report which file was bad
-        throw new Error( util.format('Invalid type expression "%s": %s', tagInfo.typeExpression,
-            e.message) );
+        throw new Error(`Invalid type expression "${tagInfo.typeExpression}": ${e.message}`);
     }
 
     tagInfo.type = tagInfo.type.concat( getTypeStrings(parsedType, true) );
     tagInfo.parsedType = parsedType;
 
     // Catharsis and JSDoc use the same names for 'optional' and 'nullable'...
-    ['optional', 'nullable'].forEach(function(key) {
+    ['optional', 'nullable'].forEach(key => {
         if (parsedType[key] !== null && parsedType[key] !== undefined) {
             tagInfo[key] = parsedType[key];
         }
@@ -274,7 +267,7 @@ function parseTypeExpression(tagInfo) {
 }
 
 // TODO: allow users to add/remove type parsers (perhaps via plugins)
-var typeParsers = [parseName, parseTypeExpression];
+const typeParsers = [parseName, parseTypeExpression];
 
 /**
  * Parse the value of a JSDoc tag.
@@ -287,8 +280,8 @@ var typeParsers = [parseName, parseTypeExpression];
  * @return {module:jsdoc/tag/type.TagInfo} Information obtained from the tag.
  * @throws {Error} Thrown if a type expression cannot be parsed.
  */
-exports.parse = function(tagValue, canHaveName, canHaveType) {
-    var tagInfo;
+exports.parse = (tagValue, canHaveName, canHaveType) => {
+    let tagInfo;
 
     if (typeof tagValue !== 'string') {
         tagValue = '';
@@ -297,7 +290,7 @@ exports.parse = function(tagValue, canHaveName, canHaveType) {
     tagInfo = getTagInfo(tagValue, canHaveName, canHaveType);
     tagInfo.type = tagInfo.type || [];
 
-    typeParsers.forEach(function(parser) {
+    typeParsers.forEach(parser => {
         tagInfo = parser(tagInfo);
     });
 

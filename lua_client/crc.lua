@@ -1,3 +1,4 @@
+require("bit")
 local tab = {
 			0x00000000, 0x77073096, 0xee0e612c, 0x990951ba,
             0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
@@ -65,67 +66,21 @@ local tab = {
             0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 }
 
-local function xor(a, b)
-    local calc = 0
-
-    for i = 32, 0, -1 do
-	local val = 2 ^ i
-	local aa = false
-	local bb = false
-
-	if a == 0 then
-	    calc = calc + b
-	    break
-	end
-
-	if b == 0 then
-	    calc = calc + a
-	    break
-	end
-
-	if a >= val then
-	    aa = true
-	    a = a - val
-	end
-
-	if b >= val then
-	    bb = true
-	    b = b - val
-	end
-
-	if not (aa and bb) and (aa or bb) then
-	    calc = calc + val
-	end
-    end
-
-    return math.floor(calc)
-end
-
-local function lshift(num, left)
-    local res = num * (2 ^ left)
-    return res % (2 ^ 32)
-end
-
-local function rshift(num, right)
-    local res = num / (2 ^ right)
-    return math.floor(res)
-end
-
 CRC32 = {}
 
 function CRC32.hash(str)
 	local count = string.len(str)
-	local crc = xor(0,0xFFFFFFFF)
+	local crc = BitXor(0, 0xFFFFFFFF)
 	for i=1,count do
 		local byte = string.byte(str, i)
-		local a = rshift(crc,8) & 0x00FFFFFF
-		local b = tab[(xor(crc,byte) & 0xFF)+1]
-		crc =  xor(a , b)
+		local a = BitAnd(BitL(crc, 8), 0x00FFFFFF)
+		local b = tab[BitAnd(BitXor(crc,byte), 0xFF)+1]
+		crc =  BitXor(a, b)
 	end
-	crc = xor(crc , 0xFFFFFFFF)
-	crc = crc | -(crc & lshift(1,31))
+	crc = BitXor(crc, 0xFFFFFFFF)
+	crc = BitOr(crc, BitAnd(crc, BitR(1, 31)))--crc = BitOr(crc, -BitAnd(crc, BitR(1, 31)))
 
-	crc = crc & 0xFFFFFFFF
+	crc = BitAnd(crc, 0xFFFFFFFF)
     return crc
 	--return string.format("%x",crc)
 end

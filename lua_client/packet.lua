@@ -10,6 +10,7 @@ assert(pb.loadfile "./pb/message.pb")
 assert(pb.loadfile "./pb/game.pb")
 assert(pb.loadfile "./pb/client.pb")
 
+local unpack = unpack or table.unpack
 --创建包头
 function BuildPacketHead(id, destservertype)
     return{
@@ -22,18 +23,19 @@ end
 
 --包处理回调函数
 function RegisterPacket(packetName, func)
-    name = string.lower(packetName)
-    id = CRC32.hash(name)
+    local name = string.lower(packetName)
+    local id = CRC32.hash(name)
+	print(id, name)
     m_PacketCreateMap[id] = "message." .. packetName
     m_PacketMap[id] = func
 end
 
 --处理包函数
 function HandlePacket(dat)
-    id = bytes_to_int(string.sub(dat, 0, 4))
+    local id = bytes_to_int(string.sub(dat, 0, 4))
     --id = bytes_to_int(string.sub(dat, 1, 4)) lua 坐标从1开始，0和1处理效果一样
     buff = string.sub(dat, 5)
-    packetName = m_PacketCreateMap[id]
+    local packetName = m_PacketCreateMap[id]
     if packetName ~= nil then
         local packet = pb.decode(packetName, buff)
         m_PacketMap[id](packet)
@@ -42,8 +44,8 @@ end
 
 --发送包函数
 function SendPacket(name, packet)
-    id = CRC32.hash(string.lower(name))
-    packetName = "message." .. name
+    local id = CRC32.hash(string.lower(name))
+    local packetName = "message." .. name
     if packetName ~= nil then
         local bytes = pb.encode(packetName, packet)
         bytes = int_to_bytes(#bytes + 4) .. int_to_bytes(id) .. bytes
@@ -53,8 +55,8 @@ end
 
 --[[tcp粘包特殊结束标志
 function SendPacket(name, packet)
-    id = CRC32.hash(string.lower(name))
-    packetName = "message." .. name
+    local id = CRC32.hash(string.lower(name))
+    local packetName = "message." .. name
     if packetName ~= nil then
         local bytes = pb.encode(packetName, packet)
         bytes = int_to_bytes(id) .. bytes .. TCP_END
@@ -104,7 +106,7 @@ function int_to_bytes(num,endian,signed)
         res=t
     end
 
-    return string.char(table.unpack(res))
+    return string.char(unpack(res))
 end
 
  -- lua table data

@@ -40,6 +40,7 @@ private:
 	void generatePrik()
 	{
 		x = BigInt(std::rand()) % q;
+		x = x + BigInt(1);
 	}
 
 	void generatePubk()

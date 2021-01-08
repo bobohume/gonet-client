@@ -1,29 +1,29 @@
 /**
  * Schema for validating JSDoc doclets.
  * @module jsdoc/schema
- * @see <http://tools.ietf.org/html/draft-zyp-json-schema-03>
+ * @see <https://trac.tools.ietf.org/html/draft-wright-json-schema-validation-01>
  */
-'use strict';
-
 // JSON schema types
-var ARRAY = 'array';
-var BOOLEAN = 'boolean';
-var NULL = 'null';
-var NUMBER = 'number';
-var OBJECT = 'object';
-var STRING = 'string';
-var UNDEFINED = 'undefined';
+const ARRAY = 'array';
+const BOOLEAN = 'boolean';
+const NULL = 'null';
+const NUMBER = 'number';
+const OBJECT = 'object';
+const STRING = 'string';
 
-var BOOLEAN_OPTIONAL = [BOOLEAN, NULL, UNDEFINED];
-var STRING_OPTIONAL = [STRING, NULL, UNDEFINED];
+const BOOLEAN_OPTIONAL = [BOOLEAN, NULL];
+const STRING_OPTIONAL = [STRING, NULL];
 
-var EVENT_REGEXP = /event:[\S]+/;
-var PACKAGE_REGEXP = /package:[\S]+/;
+const EVENT_REGEXP = 'event:[\\S]+';
+const PACKAGE_REGEXP = 'package:[\\S]+';
+
+const STRING_SCHEMA = {
+    type: STRING
+};
 
 // information about the code associated with a doclet
-var META_SCHEMA = exports.META_SCHEMA = {
+const META_SCHEMA = exports.META_SCHEMA = {
     type: OBJECT,
-    optional: true,
     additionalProperties: false,
     properties: {
         code: {
@@ -31,62 +31,48 @@ var META_SCHEMA = exports.META_SCHEMA = {
             additionalProperties: false,
             properties: {
                 funcscope: {
-                    type: STRING,
-                    optional: true
+                    type: STRING
                 },
                 id: {
-                    type: STRING,
-                    optional: true
+                    type: STRING
                 },
-                name: {
-                    optional: true
-                },
+                name: {},
                 node: {
-                    type: OBJECT,
-                    optional: true
+                    type: OBJECT
                 },
                 paramnames: {
                     type: ARRAY,
-                    optional: true,
                     uniqueItems: true,
                     items: {
                         type: STRING
                     }
                 },
                 type: {
-                    type: STRING,
-                    optional: true
+                    type: STRING
                 },
-                value: {
-                    optional: true
-                }
+                value: {}
             }
         },
         columnno: {
             title: 'The column number of the code associated with this doclet.',
-            type: NUMBER,
-            optional: true
+            type: NUMBER
         },
         filename: {
             title: 'The name of the file that contains the code associated with this doclet.',
-            type: STRING,
-            optional: true
+            type: STRING
         },
         lineno: {
             title: 'The line number of the code associated with this doclet.',
-            type: NUMBER,
-            optional: true
+            type: NUMBER
         },
         path: {
             title: 'The path in which the code associated with this doclet is located.',
-            type: STRING,
-            optional: true
+            type: STRING
         },
         range: {
             title: 'The positions of the first and last characters of the code associated with ' +
                 'this doclet.',
             type: ARRAY,
-            optional: true,
             minItems: 2,
             maxItems: 2,
             items: {
@@ -100,7 +86,7 @@ var META_SCHEMA = exports.META_SCHEMA = {
 };
 
 // type property containing type names
-var TYPE_PROPERTY_SCHEMA = exports.TYPE_PROPERTY_SCHEMA = {
+const TYPE_PROPERTY_SCHEMA = exports.TYPE_PROPERTY_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
@@ -120,31 +106,26 @@ var TYPE_PROPERTY_SCHEMA = exports.TYPE_PROPERTY_SCHEMA = {
 };
 
 // enumeration properties
-var ENUM_PROPERTY_SCHEMA = exports.ENUM_PROPERTY_SCHEMA = {
+const ENUM_PROPERTY_SCHEMA = exports.ENUM_PROPERTY_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
         comment: {
             type: STRING
         },
-        defaultvalue: {
-            optional: true
-        },
+        defaultvalue: {},
         description: {
-            type: STRING_OPTIONAL,
-            optional: true
+            type: STRING_OPTIONAL
         },
         kind: {
             type: STRING,
-            // TODO: get this from a real enum somewhere
             enum: ['member']
         },
         longname: {
             type: STRING
         },
         memberof: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         meta: META_SCHEMA,
         name: {
@@ -160,7 +141,6 @@ var ENUM_PROPERTY_SCHEMA = exports.ENUM_PROPERTY_SCHEMA = {
         },
         scope: {
             type: STRING,
-            // TODO: get this from a real enum somewhere
             enum: ['static']
         },
         type: TYPE_PROPERTY_SCHEMA,
@@ -172,18 +152,15 @@ var ENUM_PROPERTY_SCHEMA = exports.ENUM_PROPERTY_SCHEMA = {
 };
 
 // function parameter, or object property defined with @property tag
-var PARAM_SCHEMA = exports.PARAM_SCHEMA = {
+const PARAM_SCHEMA = exports.PARAM_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
         // what is the default value for this parameter?
-        defaultvalue: {
-            optional: true
-        },
+        defaultvalue: {},
         // a description of the parameter
         description: {
-            type: STRING_OPTIONAL,
-            optional: true
+            type: STRING_OPTIONAL
         },
         // what name does this parameter have within the function?
         name: {
@@ -191,33 +168,28 @@ var PARAM_SCHEMA = exports.PARAM_SCHEMA = {
         },
         // can the value for this parameter be null?
         nullable: {
-            type: BOOLEAN_OPTIONAL,
-            optional: true
+            type: BOOLEAN_OPTIONAL
         },
         // is a value for this parameter optional?
         optional: {
-            type: BOOLEAN_OPTIONAL,
-            optional: true
+            type: BOOLEAN_OPTIONAL
         },
         // what are the types of value expected for this parameter?
         type: TYPE_PROPERTY_SCHEMA,
         // can this parameter be repeated?
         variable: {
-            type: BOOLEAN_OPTIONAL,
-            optional: true
+            type: BOOLEAN_OPTIONAL
         }
     }
 };
 
-var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
+const DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
         // what access privileges are allowed
         access: {
             type: STRING,
-            optional: true,
-            // TODO: define this as an enumeration elsewhere
             enum: [
                 'package',
                 'private',
@@ -226,16 +198,13 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
             ]
         },
         alias: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         async: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         augments: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: {
                 type: STRING
@@ -243,14 +212,12 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         },
         author: {
             type: ARRAY,
-            optional: true,
             items: {
                 type: STRING
             }
         },
         borrowed: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: {
                 type: OBJECT,
@@ -258,8 +225,7 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
                 properties: {
                     // name of the target
                     as: {
-                        type: STRING,
-                        optional: true
+                        type: STRING
                     },
                     // name of the source
                     from: {
@@ -270,51 +236,41 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         },
         // a description of the class that this constructor belongs to
         classdesc: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         comment: {
             type: STRING
         },
         copyright: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
-        defaultvalue: {
-            optional: true
-        },
+        defaultvalue: {},
         defaultvaluetype: {
             type: STRING,
-            optional: true,
             enum: [OBJECT, ARRAY]
         },
         // is usage of this symbol deprecated?
         deprecated: {
-            type: [STRING, BOOLEAN],
-            optional: true
+            type: [STRING, BOOLEAN]
         },
         // a description
         description: {
-            type: STRING_OPTIONAL,
-            optional: true
+            type: STRING_OPTIONAL
         },
         // something else to consider
         examples: {
             type: ARRAY,
-            optional: true,
             items: {
                 type: STRING
             }
         },
         exceptions: {
             type: ARRAY,
-            optional: true,
             items: PARAM_SCHEMA
         },
         // the path to another constructor
         extends: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: {
                 type: STRING
@@ -323,7 +279,6 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         // the path to another doc object
         fires: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: {
                 type: STRING,
@@ -331,58 +286,47 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
             }
         },
         forceMemberof: {
-            type: BOOLEAN_OPTIONAL,
-            optional: true
+            type: BOOLEAN_OPTIONAL
         },
         generator: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         hideconstructor: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         ignore: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         implementations: {
             type: ARRAY,
-            optional: true,
             items: {
                 type: STRING
             }
         },
         implements: {
             type: ARRAY,
-            optional: true,
             items: {
                 type: STRING
             }
         },
         inheritdoc: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         inherited: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         inherits: {
             type: STRING,
-            optional: true,
             dependency: {
                 inherited: true
             }
         },
         isEnum: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         // what kind of symbol is this?
         kind: {
             type: STRING,
-            // TODO: define this as an enumeration elsewhere
             enum: [
                 'class',
                 'constant',
@@ -401,12 +345,10 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
             ]
         },
         license: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         listens: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: {
                 type: STRING,
@@ -418,23 +360,25 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         },
         // probably a leading substring of the path
         memberof: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         // information about this doc
         meta: META_SCHEMA,
         // was this doclet mixed in?
         mixed: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         mixes: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: {
                 type: STRING
             }
+        },
+        modifies: {
+            type: ARRAY,
+            uniqueItems: true,
+            items: PARAM_SCHEMA
         },
         // probably a trailing substring of the path
         name: {
@@ -450,27 +394,22 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         },
         // does this member explicitly override the parent?
         override: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         overrides: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         // are there function parameters associated with this doc?
         params: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             items: PARAM_SCHEMA
         },
         preserveName: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         properties: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             minItems: 1,
             items: {
@@ -478,13 +417,11 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
             }
         },
         readonly: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         // the symbol being documented requires another symbol
         requires: {
             type: ARRAY,
-            optional: true,
             uniqueItems: true,
             minItems: 1,
             items: {
@@ -493,7 +430,6 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         },
         returns: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: PARAM_SCHEMA
         },
@@ -501,7 +437,6 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         scope: {
             type: STRING,
             enum: [
-                // TODO: make these an enumeration
                 'global',
                 'inner',
                 'instance',
@@ -511,7 +446,6 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         // something else to consider
         see: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: {
                 type: STRING
@@ -519,17 +453,14 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         },
         // at what previous version was this doc added?
         since: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         summary: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         // arbitrary tags associated with this doc
         tags: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: {
                 type: OBJECT,
@@ -539,27 +470,22 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
                         type: STRING
                     },
                     text: {
-                        type: STRING,
-                        optional: true
+                        type: STRING
                     },
                     title: {
                         type: STRING
                     },
                     value: {
-                        type: [STRING, OBJECT],
-                        optional: true,
-                        properties: PARAM_SCHEMA
+                        oneOf: [STRING_SCHEMA, PARAM_SCHEMA]
                     }
                 }
             }
         },
         'this': {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         todo: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: {
                 type: STRING
@@ -568,7 +494,6 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         // extended tutorials
         tutorials: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: {
                 type: STRING
@@ -577,107 +502,90 @@ var DOCLET_SCHEMA = exports.DOCLET_SCHEMA = {
         // what type is the value that this doc is associated with, like `number`
         type: TYPE_PROPERTY_SCHEMA,
         undocumented: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         // can this member be provided more than once? (derived from the type expression)
         variable: {
             type: BOOLEAN_OPTIONAL
         },
         variation: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         // what is the version of this doc
         version: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         // is a member left to be implemented during inheritance?
         virtual: {
-            type: BOOLEAN,
-            optional: true
+            type: BOOLEAN
         },
         yields: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: PARAM_SCHEMA
         }
     }
 };
 
-var CONTACT_INFO_SCHEMA = exports.CONTACT_INFO_SCHEMA = {
+const CONTACT_INFO_SCHEMA = exports.CONTACT_INFO_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
         email: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         name: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         url: {
             type: STRING,
-            optional: true,
             format: 'uri'
         }
     }
 };
 
-var BUGS_SCHEMA = exports.BUGS_SCHEMA = {
+const BUGS_SCHEMA = exports.BUGS_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
         email: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         url: {
             type: STRING,
-            optional: true,
             format: 'uri'
         }
     }
 };
 
-var PACKAGE_SCHEMA = exports.PACKAGE_SCHEMA = {
+const PACKAGE_SCHEMA = exports.PACKAGE_SCHEMA = {
     type: OBJECT,
     additionalProperties: false,
     properties: {
         author: {
-            anyOf: [STRING, CONTACT_INFO_SCHEMA],
-            optional: true
+            anyOf: [STRING_SCHEMA, CONTACT_INFO_SCHEMA]
         },
         bugs: {
-            anyOf: [STRING, BUGS_SCHEMA],
-            optional: true
+            anyOf: [STRING_SCHEMA, BUGS_SCHEMA]
         },
         contributors: {
             type: ARRAY,
-            optional: true,
             minItems: 0,
             items: {
-                anyOf: [STRING, CONTACT_INFO_SCHEMA]
+                anyOf: [STRING_SCHEMA, CONTACT_INFO_SCHEMA]
             }
         },
         dependencies: {
-            type: OBJECT,
-            optional: true
+            type: OBJECT
         },
         description: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         devDependencies: {
-            type: OBJECT,
-            optional: true
+            type: OBJECT
         },
         engines: {
-            type: OBJECT,
-            optional: true
+            type: OBJECT
         },
         files: {
             type: ARRAY,
@@ -689,12 +597,10 @@ var PACKAGE_SCHEMA = exports.PACKAGE_SCHEMA = {
         },
         homepage: {
             type: STRING,
-            optional: true,
             format: 'uri'
         },
         keywords: {
             type: ARRAY,
-            optional: true,
             minItems: 0,
             items: {
                 type: STRING
@@ -706,19 +612,16 @@ var PACKAGE_SCHEMA = exports.PACKAGE_SCHEMA = {
         },
         licenses: {
             type: ARRAY,
-            optional: true,
             minItems: 1,
             items: {
                 type: OBJECT,
                 additionalProperties: false,
                 properties: {
                     type: {
-                        type: STRING,
-                        optional: true
+                        type: STRING
                     },
                     url: {
                         type: STRING,
-                        optional: true,
                         format: 'uri'
                     }
                 }
@@ -726,36 +629,29 @@ var PACKAGE_SCHEMA = exports.PACKAGE_SCHEMA = {
         },
         longname: {
             type: STRING,
-            optional: true,
             pattern: PACKAGE_REGEXP
         },
         main: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         name: {
-            type: STRING,
-            optional: true
+            type: STRING
         },
         repository: {
             type: OBJECT,
-            optional: true,
             additionalProperties: false,
             properties: {
                 type: {
-                    type: STRING,
-                    optional: true
+                    type: STRING
                 },
                 // we don't use `format: 'uri'` here because repo URLs are atypical
                 url: {
-                    type: STRING,
-                    optional: true
+                    type: STRING
                 }
             }
         },
         version: {
-            type: STRING,
-            optional: true
+            type: STRING
         }
     }
 };

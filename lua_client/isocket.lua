@@ -64,45 +64,46 @@ end
 function Socket:ReceivePacket(Id, dat)
 	--找包结束
 	seekToTcpEnd = function(dat)
-	    nLen = #dat
+	    local nLen = #dat
 	    if nLen < TCP_HEAD_SIZE then
 	        return false, 0
         end
 
-	    nSize = bytes_to_int(string.sub(dat, 0, 4))
+	    local nSize = bytes_to_int(string.sub(dat, 0, 4))
 		if nSize + TCP_HEAD_SIZE <= nLen then
         	return true, nSize+TCP_HEAD_SIZE
         end
 		return false, 0
 	end
 
-	buff = self.m_pInBuffer .. dat
+	local buff = self.m_pInBuffer .. dat
 	self.m_pInBuffer = ""
-	nCurSize = 0
-::ParsePacekt:: do
-	nPacketSize = 0
-	buff1 = string.sub(buff, nCurSize+1)
-	nBufferSize = #(buff1)
-	bFindFlag = false
-	bFindFlag, nPacketSize = seekToTcpEnd(buff1)
-	--print(bFindFlag, nPacketSize, nBufferSize)
-	if bFindFlag then
-		if nBufferSize == nPacketSize then --完整包
-		    --print(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
-			HandlePacket(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
-			nCurSize =  nCurSize + nPacketSize
-		elseif (nBufferSize > nPacketSize) then
-		    --print(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
-			HandlePacket(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
-			nCurSize =  nCurSize + nPacketSize
-			goto ParsePacekt
+	local nCurSize = 0 
+	ParsePacekt = function(dat)
+		local nPacketSize = 0
+		buff1 = string.sub(buff, nCurSize+1)
+		local nBufferSize = #(buff1)
+		local bFindFlag = false
+		bFindFlag, nPacketSize = seekToTcpEnd(buff1)
+		--print(bFindFlag, nPacketSize, nBufferSize)
+		if bFindFlag then
+			if nBufferSize == nPacketSize then --完整包
+				--print(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
+				HandlePacket(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
+				nCurSize =  nCurSize + nPacketSize
+			elseif (nBufferSize > nPacketSize) then
+				--print(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
+				HandlePacket(string.sub(buff1, TCP_HEAD_SIZE+1, nPacketSize))
+				nCurSize =  nCurSize + nPacketSize
+				ParsePacekt()
+			end
+		elseif nBufferSize < 128 * 1024 then
+			self.m_pInBuffer = string.sub(buff, nCurSize+1)
+		else
+			fmt.Println("超出最大包限制，丢弃该包")
 		end
-	elseif nBufferSize < 128 * 1024 then
-		self.m_pInBuffer = string.sub(buff, nCurSize+1)
-	else
-		fmt.Println("超出最大包限制，丢弃该包")
 	end
-end
+	ParsePacekt()
 end
 
 --[[tcp粘包特殊结束标志
